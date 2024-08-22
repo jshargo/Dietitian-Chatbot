@@ -1,0 +1,10 @@
+fitz==0.0.1.dev2
+gdown==5.2.0
+langchain==0.2.14
+langchain_community==0.2.12
+langchain_openai==0.1.22
+numpy==2.1.0
+pandas==2.2.2
+sentence_transformers==3.0.1
+torch==2.4.0
+transformers==4.44.0
