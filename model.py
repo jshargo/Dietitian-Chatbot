@@ -11,7 +11,7 @@ warnings.filterwarnings("ignore", message="`clean_up_tokenization_spaces` was no
 
 query = sys.argv[1]
 
-device = "cpu"
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 csv_path = "text_chunks_and_embeddings_df.csv"  
 text_chunks_and_embedding_df = pd.read_csv(csv_path)
@@ -23,7 +23,7 @@ embeddings = torch.tensor(np.array(text_chunks_and_embedding_df["embedding"].tol
 embedding_model = SentenceTransformer(model_name_or_path="all-mpnet-base-v2", device=device)
 
 def retrieve_relevant_resources(query: str, embeddings: torch.tensor, model: SentenceTransformer=embedding_model, n_resources_to_return: int=5):
-    query_embedding = model.encode(query, convert_to_tensor=True) 
+    query_embedding = model.encode(query, convert_to_tensor=True, device=device) 
     dot_scores = util.dot_score(query_embedding, embeddings)[0]
     scores, indices = torch.topk(input=dot_scores, k=n_resources_to_return)
     return scores, indices
