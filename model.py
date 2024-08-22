@@ -13,7 +13,7 @@ query = sys.argv[1]
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-csv_path = "text_chunks_and_embeddings_df.csv"  
+csv_path = "dataset_folder/text_chunks_and_embeddings_df.csv"  
 text_chunks_and_embedding_df = pd.read_csv(csv_path)
 
 text_chunks_and_embedding_df["embedding"] = text_chunks_and_embedding_df["embedding"].apply(lambda x: np.fromstring(x.strip("[]"), sep=" "))
