@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import textwrap
@@ -8,6 +9,9 @@ import sys
 
 import warnings
 warnings.filterwarnings("ignore", message="`clean_up_tokenization_spaces` was not set")
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 query = sys.argv[1]
 
