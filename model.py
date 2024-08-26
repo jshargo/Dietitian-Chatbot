@@ -13,7 +13,7 @@ warnings.filterwarnings("ignore", message="`clean_up_tokenization_spaces` was no
 
 #To change:
 from huggingface_hub import login
-huggingface_token = os.getenv("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")
+huggingface_token = os.getenv("TOKEN")
 login(token=huggingface_token)
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
