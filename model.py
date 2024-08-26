@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import textwrap
 import torch
+from typing import List, Dict
 from sentence_transformers import util, SentenceTransformer
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig
 import sys
@@ -36,7 +37,7 @@ def print_wrapped(text, wrap_length=80):
     wrapped_text = textwrap.fill(text, wrap_length)
     print(wrapped_text)
 
-def prompt_formatter(query: str, context_items: list[dict]) -> str:
+def prompt_formatter(query: str, context_items: List[Dict]) -> str:
     context = "- " + "\n- ".join([item["sentence_chunk"] for item in context_items])
     base_prompt = """Based on the following context items, please answer the query.
 Give yourself room to think by extracting relevant passages from the context before answering the query.
@@ -61,6 +62,7 @@ Answer:"""
     dialogue_template = [{"role": "user", "content": base_prompt}]
     prompt = tokenizer.apply_chat_template(conversation=dialogue_template, tokenize=False, add_generation_prompt=True)
     return prompt
+
 
 def ask(query, temperature=0.1, max_new_tokens=512, format_answer_text=True, return_answer_only=True):
     scores, indices = retrieve_relevant_resources(query=query, embeddings=embeddings)
