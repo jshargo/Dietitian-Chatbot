@@ -11,13 +11,8 @@ import sys
 import warnings
 warnings.filterwarnings("ignore", message="`clean_up_tokenization_spaces` was not set")
 
-#To change:
-from huggingface_hub import login
-huggingface_token = os.getenv("TOKEN")
-login(token=huggingface_token)
-
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
 
 query = sys.argv[1]
 
@@ -92,13 +87,13 @@ def ask(query, temperature=0.1, max_new_tokens=512, format_answer_text=True, ret
 
 # init the LLM model
 model_id = "google/gemma-2b-it"
-config = AutoConfig.from_pretrained(pretrained_model_name_or_path=model_id, hidden_activation="gelu_pytorch_tanh", use_auth_token=huggingface_token)
-tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=model_id, use_auth_token=huggingface_token)
+config = AutoConfig.from_pretrained(pretrained_model_name_or_path=model_id, hidden_activation="gelu_pytorch_tanh", token=True)
+tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=model_id, token=True)
 llm_model = AutoModelForCausalLM.from_pretrained(pretrained_model_name_or_path=model_id, 
                                                  config=config, 
                                                  torch_dtype=torch.float16, 
                                                  low_cpu_mem_usage=False,
-                                                 use_auth_token=huggingface_token)
+                                                 token=True)
 llm_model.to(device)
 
 answer = ask(query=query)
