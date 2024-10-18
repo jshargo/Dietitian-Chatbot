@@ -1,7 +1,6 @@
 import os
 import numpy as np
 import pandas as pd
-import textwrap
 import torch
 from typing import List, Dict
 from sentence_transformers import SentenceTransformer
@@ -33,7 +32,7 @@ llm_model.to(device)
 embedding_model = SentenceTransformer("all-mpnet-base-v2").to(device)
 
 # Load embeddings
-csv_path = "embeddings/text_chunks_and_embeddings_df.csv"
+csv_path = "dataset_folder/text_chunks_and_embeddings_df.csv"
 text_chunks_and_embedding_df = pd.read_csv(csv_path)
 
 text_chunks_and_embedding_df["embedding"] = text_chunks_and_embedding_df["embedding"].apply(lambda x: np.fromstring(x.strip("[]"), sep=" "))
