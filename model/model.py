@@ -10,7 +10,7 @@ from chromadb.utils import embedding_functions
 from typing import List
 import logging
 
-# Set up logging
+# Logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -31,14 +31,14 @@ def prompt_formatter(query: str, context_documents: List[str]) -> str:
 
 def rag_query(query: str, collection, tokenizer, llm_model, device, temperature=0.8, max_new_tokens=200, n_results=5):
     try:
-        # Retrieve relevant documents
+        # Retrieve 
         results = collection.query(query_texts=[query], n_results=n_results)
         documents = results['documents'][0]
 
-        # Format prompt with retrieved context
+        # Format
         prompt = prompt_formatter(query, documents)
 
-        # Tokenize input
+        # Tokenize 
         inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=2048).to(device)
 
         # Generate response
@@ -56,9 +56,9 @@ def rag_query(query: str, collection, tokenizer, llm_model, device, temperature=
                 pad_token_id=tokenizer.pad_token_id
             )
 
-        # Decode and format response
+        # Decode and format
         output_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        # Extract the assistant's reply
+        # Extract reply
         answer = output_text[len(prompt):].strip()
         return answer
 
@@ -67,7 +67,7 @@ def rag_query(query: str, collection, tokenizer, llm_model, device, temperature=
         return f"An error occurred: {str(e)}. Please try again or rephrase your question."
 
 def main():
-    # Get the query from command line arguments
+    # Get query from CLI
     if len(sys.argv) < 2:
         print("Please provide a query as a command-line argument.")
         sys.exit(1)
@@ -75,40 +75,40 @@ def main():
 
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-    # Set up parameters (modify these as needed)
-    model_id = 'meta-llama/Llama-3.1-8B-Instruct'  # Updated LLM model ID
-    embedding_model_name = 'all-MiniLM-L6-v2'  # Embedding model name
-    collection_name = 'ties_collection'  # ChromaDB collection name
+    # Set up parameters 
+    model_id = 'meta-llama/Llama-3.1-8B-Instruct'  # model id
+    embedding_model_name = 'sentence-transformers/all-MiniLM-L6-v2'  # embedding model
+    collection_name = 'ties_collection'  # Chromadb
     n_results = 5
     temperature = 0.8
     max_new_tokens = 200
-    path = "vector_db"  # ChromaDB database path
+    path = "vector_db"  # chroma path
 
-    # Device setup
+    # Device 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     if device.type == 'cpu' and torch.backends.mps.is_available():
         device = torch.device('mps')
 
     logger.info(f"Using device: {device}")
 
-    # Initialize ChromaDB client
+    # Init ChromaDB 
     client = chromadb.PersistentClient(path=path)
 
-    # Initialize embedding function
+    # Init embedding function
     embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=embedding_model_name)
 
-    # Get or create the collection with the embedding function
+    # Get or create collection
     collection = client.get_or_create_collection(
         name=collection_name,
         embedding_function=embedding_function
     )
 
-    # Check if collection is empty
+    # Check collection 
     if collection.count() == 0:
         logger.error("The ChromaDB collection is empty. Please run index_documents.py first to index documents.")
         sys.exit(1)
 
-    # Initialize LLM model
+    # Init LLM model
     try:
         tokenizer = AutoTokenizer.from_pretrained(model_id)
         llm_model = AutoModelForCausalLM.from_pretrained(
@@ -122,7 +122,6 @@ def main():
         logger.error(f"Error loading LLM model: {e}")
         sys.exit(1)
 
-    # Run the RAG query
     response = rag_query(
         query=query,
         collection=collection,
