@@ -1,15 +1,14 @@
-import os
 import sys
+__import__('pysqlite3')
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+import os
 import chromadb
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from chromadb.utils import embedding_functions
 from typing import List
 import logging
-
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
