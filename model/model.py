@@ -74,7 +74,6 @@ def main():
         sys.exit(1)
     query = sys.argv[1]
 
-
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
     # Set up parameters 
