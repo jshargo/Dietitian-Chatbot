@@ -15,6 +15,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def prompt_formatter(query: str, context_documents: List[str]) -> str:
     context = "\n\n".join([f"[{i+1}] {doc}" for i, doc in enumerate(context_documents)])
     system_prompt = "You are a helpful assistant."
