@@ -1,8 +1,8 @@
 # For AI server since sqlite is not installed and python version is 3.8
 import sys
-__import__('pysqlite3')
+'''__import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-
+'''
 import os
 import chromadb
 import torch
@@ -78,7 +78,7 @@ def main():
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
     # Set up parameters 
-    model_id = 'meta-llama/Llama-3.1-8B-Instruct'  # model id
+    model_id = 'nvidia/Mistral-NeMo-Minitron-8B-Instruct' # model id
     embedding_model_name = 'sentence-transformers/all-MiniLM-L6-v2'  # embedding model
     collection_name = 'ties_collection'  # Chromadb
     n_results = 5
