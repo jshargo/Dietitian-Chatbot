@@ -18,9 +18,9 @@ This project, which is in progress, aims to create an emotionally conscious diet
 
 ## 📋 Prerequisites
 
-python
-```pip install -r requirements.txt```
-
+```bash
+pip install -r requirements.txt
+```
 ## 🌟 Features
 
 - PDF document processing and chunking
@@ -41,12 +41,13 @@ python
 First, index your PDF documents:
 
 For CSV file:
-```python
+```bash
 python create_embeddings.py
 ```
 For VectorDB:
-'''python index_documents.py''' 
-
+```bash
+python index_documents.py
+```
 This script will:
 - Process PDF documents
 - Create text chunks with configurable size and overlap
@@ -56,10 +57,12 @@ This script will:
 ### 2. Query the System
 
 Basic usage:
-'''python improved-model.py "Your query here"'''
+```bash
+python improved-model.py "Your query here"
+```
 
 Or load with AI server:
-ssh @aiscalar ...
+``` ssh @aiscalar ... ```
 
 ## 🏗️ Project Structure
 
