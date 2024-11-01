@@ -5,7 +5,6 @@ import torch
 from typing import List, Dict
 from sentence_transformers import SentenceTransformer
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig
-import faiss
 
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
@@ -19,9 +18,13 @@ print(f"Using device: {device}")
 
 
 # Init Model
-model_id = "meta-llama/Llama-3.1-8B-Instruct"
+model_id = "nvidia/Mistral-NeMo-Minitron-8B-Instruct"
 config = AutoConfig.from_pretrained(pretrained_model_name_or_path=model_id, hidden_activation="gelu_pytorch_tanh", token=True)
-tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=model_id, token=True)
+tokenizer = AutoTokenizer.from_pretrained(
+    pretrained_model_name_or_path=model_id, 
+    token=True,
+    clean_up_tokenization_spaces=False
+)
 llm_model = AutoModelForCausalLM.from_pretrained(pretrained_model_name_or_path=model_id, 
                                                  config=config, 
                                                  torch_dtype=torch.float16, 
@@ -41,26 +44,18 @@ pages_and_chunks = text_chunks_and_embedding_df.to_dict(orient="records")
 embeddings = np.array(text_chunks_and_embedding_df["embedding"].tolist()).astype('float32')
 dimension = embeddings.shape[1]
 
-# Check if a saved index exists
-index_path = "faiss_index.bin"
-if os.path.exists(index_path):
-    print("Loading existing FAISS index...")
-    index = faiss.read_index(index_path)
-else:
-    print("Creating new FAISS index...")
-    index = faiss.IndexFlatIP(dimension)
-    if device.type == 'cuda':
-        res = faiss.StandardGpuResources()
-        index = faiss.index_cpu_to_gpu(res, 0, index)
-    index.add(embeddings)
-    faiss.write_index(faiss.index_gpu_to_cpu(index) if device.type == 'cuda' else index, index_path)
-
-print(f"FAISS index contains {index.ntotal} vectors")
-
 def retrieve_relevant_resources(query: str, n_resources_to_return: int = 5) -> List[Dict]:
     query_embedding = embedding_model.encode(query, convert_to_tensor=True, device=device)
-    scores, indices = index.search(query_embedding.cpu().numpy().reshape(1, -1), n_resources_to_return)
-    return [{"chunk": pages_and_chunks[i], "score": float(scores[0][j])} for j, i in enumerate(indices[0])]
+    
+    # Calculate cosine similarity between query and all embeddings
+    similarities = np.dot(embeddings, query_embedding.cpu().numpy())
+    
+    # Get top k indices
+    top_k_indices = np.argsort(similarities)[-n_resources_to_return:][::-1]
+    top_k_scores = similarities[top_k_indices]
+    
+    return [{"chunk": pages_and_chunks[i], "score": float(score)} 
+            for i, score in zip(top_k_indices, top_k_scores)]
 
 def prompt_formatter(query: str, context_items: List[Dict]) -> str:
     context = "\n".join([f"[{i+1}] {item['chunk']['sentence_chunk']}" for i, item in enumerate(context_items)])
@@ -98,7 +93,7 @@ def ask(query: str, temperature = 0.8, max_new_tokens = 512) -> str:
                 repetition_penalty=1.2
             )
         
-        output_text = tokenizer.decode(outputs[0], skip_special_tokens=True, clean_up_tokenization_spaces=True)
+        output_text = tokenizer.decode(outputs[0], skip_special_tokens=True, clean_up_tokenization_spaces=False)
         answer = output_text.split("Here's my response:")[-1].strip()
         return answer
     except Exception as e:
