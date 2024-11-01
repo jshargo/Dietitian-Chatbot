@@ -1,6 +1,26 @@
-# RAG-Powered Document Question Answering System
+# Retireval Augmented Dietitian Chatbot 
 
-A robust Question Answering system that uses Retrieval-Augmented Generation (RAG) to provide accurate answers from PDF documents. The system leverages ChromaDB for vector storage, FAISS for efficient similarity search, and LLaMA 3.1 for natural language generation.
+This project, which is in progress, aims to create an emotionally conscious dietitian chatbot support system to help people with lifestyle diseases. Given a set of PDF or other formatted documents, the system will ingest, process, and store embeddings of any textual data, and add it to a corpus where it will be used as the knowledge base for the chatbot. Then, the embeddings are loaded, along with the user query which is also embedded, and passed onto a similarity search to retrieve the most relevant documents. The documents are then passed onto a LLM to generate a response, grounding the chatbot's reasoning. Make sure to run the scripts in a venv, with all the dependencies installed. Python version 3.10 or above is recommended.
+
+## 🛠️ Technology Stack
+
+- **LLM**: Meta's LLaMA 3.1 8B Instruct Model or other compatible models
+- **Embedding Models**: 
+  - Sentence Transformers (all-MiniLM-L6-v2)
+  - MPNet (all-mpnet-base-v2)
+- **Vector Stores**: 
+  - ChromaDB
+  - FAISS
+  - A CSV file
+- **PDF Processing**: PyMuPDF (fitz)
+- **ML Framework**: PyTorch
+- **NLP**: SpaCy
+
+## 📋 Prerequisites
+
+python
+
+'''pip install -r requirements.txt'''
 
 ## 🌟 Features
 
@@ -13,24 +33,7 @@ A robust Question Answering system that uses Retrieval-Augmented Generation (RAG
 - Configurable chunk sizes and overlap
 - Robust error handling and logging
 
-## 🛠️ Technology Stack
-
-- **LLM**: Meta's LLaMA 3.1 8B Instruct Model
-- **Embedding Models**: 
-  - Sentence Transformers (all-MiniLM-L6-v2)
-  - MPNet (all-mpnet-base-v2)
-- **Vector Stores**: 
-  - ChromaDB
-  - FAISS
-- **PDF Processing**: PyMuPDF (fitz)
-- **ML Framework**: PyTorch
-- **NLP**: SpaCy
-
-## 📋 Prerequisites
-
-python
-
-pip install -r requirements.txt
+![RAG System Diagram](./RAG-diagram.png)
 
 ## 🚀 Usage
 
@@ -39,10 +42,10 @@ pip install -r requirements.txt
 First, index your PDF documents:
 
 For CSV file:
-python create_embeddings.py
+'''python create_embeddings.py'''
 
 For VectorDB:
-python index_documents.py 
+'''python index_documents.py''' 
 
 This script will:
 - Process PDF documents
@@ -53,11 +56,10 @@ This script will:
 ### 2. Query the System
 
 Basic usage:
-python improved-model.py "Your query here"
+'''python improved-model.py "Your query here"'''
 
 Or load with AI server:
-ssh @aiscalar
-
+ssh @aiscalar ...
 
 ## 🏗️ Project Structure
 
@@ -90,13 +92,12 @@ The system includes several optimizations:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+## Notes
 
-## ⚠️ Important Notes
-
-- Ensure you have sufficient GPU memory when using larger models
-- Store sensitive documents securely
 - Consider chunking parameters based on your specific use case
-- Monitor system resources when processing large documents
+- Model architecture is not final, and may change
+- The project is still in progress and is not yet complete
+- Web app is still under development, and may not work as expected
 
 
  
