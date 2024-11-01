@@ -41,9 +41,9 @@ python
 First, index your PDF documents:
 
 For CSV file:
-python
-```python create_embeddings.py```
-
+```python
+python create_embeddings.py
+```
 For VectorDB:
 '''python index_documents.py''' 
 
