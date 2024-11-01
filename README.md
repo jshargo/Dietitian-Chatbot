@@ -19,8 +19,7 @@ This project, which is in progress, aims to create an emotionally conscious diet
 ## 📋 Prerequisites
 
 python
-
-'''pip install -r requirements.txt'''
+```pip install -r requirements.txt```
 
 ## 🌟 Features
 
@@ -42,7 +41,8 @@ python
 First, index your PDF documents:
 
 For CSV file:
-'''python create_embeddings.py'''
+python
+```python create_embeddings.py```
 
 For VectorDB:
 '''python index_documents.py''' 
