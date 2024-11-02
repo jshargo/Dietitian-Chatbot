@@ -76,7 +76,7 @@ Here's my response:
 """
     return base_prompt
 
-def ask(query: str, temperature = 0.8, max_new_tokens = 512) -> str:
+def ask(query: str, temperature = 0.3, max_new_tokens = 512) -> str:
     try:
         context_items = retrieve_relevant_resources(query)
         prompt = prompt_formatter(query, context_items)
