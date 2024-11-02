@@ -38,7 +38,7 @@ embedding_model = SentenceTransformer("all-mpnet-base-v2").to(device)
 csv_path = "dataset_folder/text_chunks_and_embeddings_df.csv"
 text_chunks_and_embedding_df = pd.read_csv(csv_path)
 
-text_chunks_and_embedding_df["embedding"] = text_chunks_and_embedding_df["embedding"].apply(lambda x: np.fromstring(x.strip("[]"), sep=" "))
+text_chunks_and_embedding_df["embedding"] = text_chunks_and_embedding_df["embedding"].apply(lambda x: np.fromstring(x.strip("[]"), sep=" ")) # For similarity calculation
 pages_and_chunks = text_chunks_and_embedding_df.to_dict(orient="records")
 
 embeddings = np.array(text_chunks_and_embedding_df["embedding"].tolist()).astype('float32')
@@ -89,7 +89,6 @@ def ask(query: str, temperature = 0.8, max_new_tokens = 512) -> str:
                 do_sample=True,
                 max_new_tokens=max_new_tokens,
                 top_k=50,
-                repetition_penalty=1.2
             )
         
         output_text = tokenizer.decode(outputs[0], skip_special_tokens=True, clean_up_tokenization_spaces=False)

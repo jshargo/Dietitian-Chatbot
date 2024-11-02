@@ -174,3 +174,4 @@ cython_debug/
 ehthumbs.db
 Thumbs.db
 model/rag.ipynb
+/backend
