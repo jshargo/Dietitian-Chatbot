@@ -88,7 +88,6 @@ def ask(query: str, temperature = 0.8, max_new_tokens = 512) -> str:
                 temperature=temperature,
                 do_sample=True,
                 max_new_tokens=max_new_tokens,
-                top_p=0.95,
                 top_k=50,
                 repetition_penalty=1.2
             )
