@@ -52,17 +52,26 @@ for item in tqdm(pages_and_texts):
     item["page_sentence_count_spacy"] = len(item["sentences"])
 random.sample(pages_and_texts, k=1)
 
-#chunking
-num_sentence_chunk_size = 10 
+#chunking 
+num_sentence_chunk_size = 10 # this equates to ~ 287 tokens per chunk
 
 def split_list(input_list: list, 
-               slice_size: int) -> list[list[str]]:
-    
-    return [input_list[i:i + slice_size] for i in range(0, len(input_list), slice_size)]
+               slice_size: int,
+               overlap: int = 5) -> list[list[str]]:
+    """Split a list into chunks with overlap"""
+    chunks = []
+    for i in range(0, len(input_list), slice_size - overlap):
+        chunk = input_list[i:i + slice_size]
+        if chunk:  # Only add non-empty chunks
+            chunks.append(chunk)
+    return chunks
 
 for item in tqdm(pages_and_texts):
-    item["sentence_chunks"] = split_list(input_list=item["sentences"],
-                                         slice_size=num_sentence_chunk_size)
+    item["sentence_chunks"] = split_list(
+        input_list=item["sentences"],
+        slice_size=num_sentence_chunk_size,
+        overlap=5  # 5 sentence overlap
+    )
     item["num_chunks"] = len(item["sentence_chunks"])
 df = pd.DataFrame(pages_and_texts)
 df.describe().round(2)
