@@ -59,24 +59,18 @@ def retrieve_relevant_resources(query: str, n_resources_to_return: int = 5) -> L
 
 def prompt_formatter(query: str, context_items: List[Dict]) -> str:
     context = "\n".join([f"[{i+1}] {item['chunk']['sentence_chunk']}" for i, item in enumerate(context_items)])
-    base_prompt = f"""Based on the following context items, please answer the query. If the information is not available in the context, please state that you don't have enough information to answer accurately.
+    base_prompt = f"""Answer the following query based on the provided context. If the answer is not in the context, please state that you don't have enough information.
 
 Context:
 {context}
 
 Query: {query}
 
-Answer: Let's approach this step-by-step:
-
-1) First, I'll identify the key points in the query.
-2) Then, I'll search for relevant information in the provided context.
-3) Finally, I'll synthesize this information to provide a comprehensive answer.
-
-Here's my response:
+Answer:
 """
     return base_prompt
 
-def ask(query: str, temperature = 0.3, max_new_tokens = 512) -> str:
+def ask(query: str, temperature=0.3, max_new_tokens=256) -> str:
     try:
         context_items = retrieve_relevant_resources(query)
         prompt = prompt_formatter(query, context_items)
@@ -89,13 +83,17 @@ def ask(query: str, temperature = 0.3, max_new_tokens = 512) -> str:
                 do_sample=True,
                 max_new_tokens=max_new_tokens,
                 top_k=50,
+                eos_token_id=tokenizer.eos_token_id,
+                repetition_penalty=1.2,
             )
         
         output_text = tokenizer.decode(outputs[0], skip_special_tokens=True, clean_up_tokenization_spaces=False)
-        answer = output_text.split("Here's my response:")[-1].strip()
+        answer = output_text.split("Answer:")[-1].strip()
+        answer = answer.split("Answer:")[0].strip()  # Remove any repeated 'Answer:' sections
         return answer
     except Exception as e:
         return f"An error occurred: {str(e)}. Please try again or rephrase your question."
+
 
 if __name__ == "__main__":
     while True:
