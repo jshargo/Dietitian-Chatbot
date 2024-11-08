@@ -76,6 +76,11 @@ def ask(query: str, temperature=0.3, max_new_tokens=256) -> str:
         prompt = prompt_formatter(query, context_items)
         inputs = tokenizer(prompt, return_tensors="pt").to(device)
         
+        # Ensure `pad_token_id` is set
+        if tokenizer.pad_token_id is None:
+            tokenizer.pad_token_id = tokenizer.eos_token_id
+        llm_model.config.pad_token_id = tokenizer.pad_token_id
+        
         with torch.no_grad():
             outputs = llm_model.generate(
                 **inputs,
@@ -84,6 +89,7 @@ def ask(query: str, temperature=0.3, max_new_tokens=256) -> str:
                 max_new_tokens=max_new_tokens,
                 top_k=50,
                 eos_token_id=tokenizer.eos_token_id,
+                pad_token_id=tokenizer.pad_token_id,  # Added to suppress the warning
                 repetition_penalty=1.2,
             )
         
@@ -93,6 +99,7 @@ def ask(query: str, temperature=0.3, max_new_tokens=256) -> str:
         return answer
     except Exception as e:
         return f"An error occurred: {str(e)}. Please try again or rephrase your question."
+
 
 
 if __name__ == "__main__":
