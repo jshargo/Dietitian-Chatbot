@@ -61,6 +61,7 @@ def prompt_formatter(query: str, context_items: List[Dict]) -> str:
     context = "\n".join([f"[{i+1}] {item['chunk']['sentence_chunk']}" for i, item in enumerate(context_items)])
     base_prompt = f"""Answer the following query based on the provided context. If the answer is not in the context, please state that you don't have enough information.
 
+
 Context:
 {context}
 
