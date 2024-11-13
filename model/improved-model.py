@@ -100,8 +100,6 @@ def ask(query: str, temperature=0.3, max_new_tokens=256) -> str:
     except Exception as e:
         return f"An error occurred: {str(e)}. Please try again or rephrase your question."
 
-
-
 if __name__ == "__main__":
     while True:
         query = input("Enter your question: ")
