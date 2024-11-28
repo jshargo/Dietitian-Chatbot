@@ -1,173 +1,88 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64)" version="20.0.5" editor="www.diagrams.net">
-  <diagram name="Agentic RAG System Workflow" id="WorkflowDiagram">
-    <mxGraphModel dx="1423" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="24.9.1">
+  <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
+    <mxGraphModel dx="961" dy="430" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
-        
-        <!-- User -->
-        <mxCell id="U1" value="User" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="50" y="300" width="80" height="80" as="geometry"/>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-1" value="User" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-150" y="80" width="80" height="80" as="geometry" />
         </mxCell>
-        
-        <!-- User Interface -->
-        <mxCell id="U2" value="User Interface" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="200" y="280" width="150" height="60" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-2" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="rOiAMbFDfOgwYJSvLYFb-1" target="rOiAMbFDfOgwYJSvLYFb-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="220" y="230" as="sourcePoint" />
+            <mxPoint x="60" y="120" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        
-        <!-- Miss Potts -->
-        <mxCell id="U3" value="Miss Potts&lt;br/&gt;(Filtering Agent)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="400" y="150" width="180" height="80" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-3" value="Initializes chat" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="rOiAMbFDfOgwYJSvLYFb-2">
+          <mxGeometry x="-0.1908" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
         </mxCell>
-        
-        <!-- Jarvis -->
-        <mxCell id="U4" value="Jarvis&lt;br/&gt;(Conversational Agent)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="400" y="350" width="180" height="80" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-4" value="Chatbot Interface" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="60" y="90" width="120" height="60" as="geometry" />
         </mxCell>
-        
-        <!-- Static Data Component (Vector DB) -->
-        <mxCell id="U5" value="Static Data&lt;br/&gt;(Vector DB)" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="650" y="150" width="100" height="60" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-7" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;User Journal&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;(Dynamic)&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;Stores &lt;span style=&quot;background-color: initial;&quot;&gt;preferences, recent&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;interactions, and sentiment that&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;the user is receptive to&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-195" y="190" width="170" height="120" as="geometry" />
         </mxCell>
-        
-        <!-- Dynamic Data Component (Journal) -->
-        <mxCell id="U6" value="Dynamic Data&lt;br/&gt;(Journal)" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="650" y="350" width="100" height="60" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-8" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.502;exitY=0.086;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="rOiAMbFDfOgwYJSvLYFb-7" target="rOiAMbFDfOgwYJSvLYFb-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-110" y="200" as="sourcePoint" />
+            <mxPoint x="-80" y="160" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        
-        <!-- Vector Databases -->
-        <mxCell id="U7" value="Vector Databases" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="850" y="150" width="100" height="60" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-10" value="&lt;h5&gt;SLM (Small Language Model)&amp;nbsp;&lt;/h5&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="30" y="20" width="90" height="40" as="geometry" />
         </mxCell>
-        
-        <!-- API Integrations -->
-        <mxCell id="U8" value="API Integrations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cce6ff;strokeColor=#3399ff;" vertex="1" parent="1">
-          <mxGeometry x="850" y="400" width="140" height="60" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-11" value="Ground Truth Dataset (Static)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="120" y="20" width="90" height="40" as="geometry" />
         </mxCell>
-        
-        <!-- Feedback Loop -->
-        <mxCell id="U9" value="Feedback Loop" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffcc;strokeColor=#999900;" vertex="1" parent="1">
-          <mxGeometry x="400" y="450" width="80" height="80" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-13" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.546;exitY=1.033;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="rOiAMbFDfOgwYJSvLYFb-10" target="rOiAMbFDfOgwYJSvLYFb-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="120" y="150" as="sourcePoint" />
+            <mxPoint x="170" y="100" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        
-        <!-- Secret Manager -->
-        <mxCell id="U10" value="Secret Manager" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffcccc;strokeColor=#ff6666;" vertex="1" parent="1">
-          <mxGeometry x="200" y="500" width="100" height="60" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-14" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="rOiAMbFDfOgwYJSvLYFb-11" target="rOiAMbFDfOgwYJSvLYFb-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="120" y="150" as="sourcePoint" />
+            <mxPoint x="82" y="150" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        
-        <!-- Agent IWS System -->
-        <mxCell id="U11" value="Agent IWS System" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5c2e0;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="650" y="500" width="160" height="80" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-16" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;Loaded in&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="90" y="60" width="60" height="30" as="geometry" />
         </mxCell>
-        
-        <!-- Edges -->
-        
-        <!-- User to User Interface -->
-        <mxCell id="E1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="U1" target="U2">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-17" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.854;exitY=0.19;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="rOiAMbFDfOgwYJSvLYFb-7" target="rOiAMbFDfOgwYJSvLYFb-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="240" as="sourcePoint" />
+            <mxPoint x="98" y="152" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        
-        <!-- User Interface to Miss Potts -->
-        <mxCell id="E2" style="endArrow=block;html=1;" edge="1" parent="1" source="U2" target="U3">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-28" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.214;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="rOiAMbFDfOgwYJSvLYFb-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="170" y="150" as="sourcePoint" />
+            <mxPoint x="230" y="119.96000000000015" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        
-        <!-- Miss Potts to Static Data Component -->
-        <mxCell id="E3" style="endArrow=block;html=1;" edge="1" parent="1" source="U3" target="U5">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-30" value="Agentic Flow" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="230" y="90" width="110" height="50" as="geometry" />
         </mxCell>
-        
-        <!-- Miss Potts to Dynamic Data Component -->
-        <mxCell id="E4" style="endArrow=block;html=1;" edge="1" parent="1" source="U3" target="U6">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-31" value="- Plan an outline.&amp;nbsp;&lt;div&gt;- Decide what, if any, web searches are needed to gather more information.&amp;nbsp;&lt;/div&gt;&lt;div&gt;- Write an initial response&amp;nbsp;&lt;/div&gt;&lt;div&gt;- Read over the first response to spot any incorrect information against ground truths and user&#39;s personal preferences&lt;/div&gt;&lt;div&gt;- Revise the draft taking into account any weaknesses spotted.&amp;nbsp;&lt;/div&gt;&lt;div&gt;- And so on.&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="360" y="50" width="250" height="130" as="geometry" />
         </mxCell>
-        
-        <!-- Miss Potts to Jarvis -->
-        <mxCell id="E5" style="endArrow=block;html=1;" edge="1" parent="1" source="U3" target="U4">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-33" value="Key Agent Components" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="640" y="30" width="200" height="200" as="geometry" />
         </mxCell>
-        
-        <!-- Jarvis to User Interface -->
-        <mxCell id="E6" style="endArrow=block;html=1;" edge="1" parent="1" source="U4" target="U2">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-37" value="&lt;font style=&quot;font-size: 7px;&quot;&gt;- &lt;b&gt;Reflection&lt;/b&gt;: The LLM examines its own work to come up with ways to improve it.&amp;nbsp;&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;- &lt;b&gt;Tool use&lt;/b&gt;: The LLM is given tools such as web search (Web Voyager), code execution (API Calls), or any other function to help it gather information, take action, or process data.&amp;nbsp;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;- &lt;b&gt;Planning:&lt;/b&gt; The LLM comes up with, and executes, a multistep plan to achieve a goal&amp;nbsp;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 7px;&quot;&gt;- &lt;b&gt;Multi-agent collaboration&lt;/b&gt;: More than one AI agent work together, splitting up tasks (Data collection, Response generation, response evaluation, sentiment analysis, etc.)&lt;/font&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="rOiAMbFDfOgwYJSvLYFb-33">
+          <mxGeometry y="20" width="200" height="180" as="geometry" />
         </mxCell>
-        
-        <!-- Jarvis to Vector Databases -->
-        <mxCell id="E7" style="endArrow=block;html=1;" edge="1" parent="1" source="U4" target="U7">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-39" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.325;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.012;entryY=0.346;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="rOiAMbFDfOgwYJSvLYFb-37" target="rOiAMbFDfOgwYJSvLYFb-42">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="840" y="110" as="sourcePoint" />
+            <mxPoint x="900" y="70" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        
-        <!-- Static Data Component to Vector Databases -->
-        <mxCell id="E8" style="endArrow=block;html=1;" edge="1" parent="1" source="U5" target="U7">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="rOiAMbFDfOgwYJSvLYFb-42" value="&lt;div&gt;&lt;font size=&quot;1&quot;&gt;&lt;b&gt;Function Calling:&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;Generate function calls, but by writing more complex prompts (such as variations of ReAct prompts) that tell the LLM what functions are available and then have the LLM generate a string that a separate software routine parses to figure out if it wants to call a function.&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="910" y="10" width="210" height="140" as="geometry" />
         </mxCell>
-        
-        <!-- Dynamic Data Component to Vector Databases -->
-        <mxCell id="E9" style="endArrow=block;html=1;" edge="1" parent="1" source="U6" target="U7">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- Vector Databases to Jarvis -->
-        <mxCell id="E10" style="endArrow=block;html=1;" edge="1" parent="1" source="U7" target="U4">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- API Integrations to Miss Potts -->
-        <mxCell id="E11" style="endArrow=block;html=1;" edge="1" parent="1" source="U8" target="U3">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- API Integrations to Vector Databases -->
-        <mxCell id="E12" style="endArrow=block;html=1;" edge="1" parent="1" source="U8" target="U7">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- Jarvis to Feedback Loop -->
-        <mxCell id="E13" style="endArrow=block;html=1;" edge="1" parent="1" source="U4" target="U9">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- Feedback Loop to Miss Potts -->
-        <mxCell id="E14" style="endArrow=block;html=1;" edge="1" parent="1" source="U9" target="U3">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- API Integrations to Secret Manager -->
-        <mxCell id="E15" style="endArrow=block;html=1;" edge="1" parent="1" source="U8" target="U10">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- Secret Manager to Miss Potts -->
-        <mxCell id="E16" style="endArrow=block;html=1;" edge="1" parent="1" source="U10" target="U3">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- Agent IWS System to Miss Potts -->
-        <mxCell id="E17" style="endArrow=block;html=1;" edge="1" parent="1" source="U11" target="U3">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- Agent IWS System to Jarvis -->
-        <mxCell id="E18" style="endArrow=block;html=1;" edge="1" parent="1" source="U11" target="U4">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- Feedback Loop to User -->
-        <mxCell id="E19" style="endArrow=block;html=1;" edge="1" parent="1" source="U9" target="U1">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- Secret Manager to API Integrations -->
-        <mxCell id="E20" style="endArrow=block;html=1;" edge="1" parent="1" source="U10" target="U8">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
-        <!-- Agent IWS System to Vector Databases -->
-        <mxCell id="E21" style="endArrow=block;html=1;" edge="1" parent="1" source="U11" target="U7">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        
       </root>
     </mxGraphModel>
-  </diagram>
-</mxfile>
