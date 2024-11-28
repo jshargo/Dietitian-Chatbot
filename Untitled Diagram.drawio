@@ -1,135 +1,169 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="24.8.6">
-  <diagram name="Page-1" id="CNBzxVxw_HEUZCkIkbaE">
-    <mxGraphModel dx="3585" dy="1005" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64)" version="20.0.5" editor="www.diagrams.net">
+  <diagram name="Agentic RAG System Workflow" id="WorkflowDiagram">
+    <mxGraphModel dx="1423" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
-
+        
         <!-- User -->
         <mxCell id="U1" value="User" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
           <mxGeometry x="50" y="300" width="80" height="80" as="geometry"/>
         </mxCell>
-
+        
         <!-- User Interface -->
         <mxCell id="U2" value="User Interface" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
           <mxGeometry x="200" y="280" width="150" height="60" as="geometry"/>
         </mxCell>
-
+        
         <!-- Miss Potts -->
-        <mxCell id="U3" value="Miss Potts<br/>(Filtering Agent)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+        <mxCell id="U3" value="Miss Potts&lt;br/&gt;(Filtering Agent)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
           <mxGeometry x="400" y="150" width="180" height="80" as="geometry"/>
         </mxCell>
-
+        
         <!-- Jarvis -->
-        <mxCell id="U4" value="Jarvis<br/>(Conversational Agent)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="U4" value="Jarvis&lt;br/&gt;(Conversational Agent)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
           <mxGeometry x="400" y="350" width="180" height="80" as="geometry"/>
         </mxCell>
-
+        
         <!-- Static Data Component (Vector DB) -->
-        <mxCell id="U5" value="Static Data<br/>(Vector DB)" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+        <mxCell id="U5" value="Static Data&lt;br/&gt;(Vector DB)" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
           <mxGeometry x="650" y="150" width="100" height="60" as="geometry"/>
         </mxCell>
-
+        
         <!-- Dynamic Data Component (Journal) -->
-        <mxCell id="U6" value="Dynamic Data<br/>(Journal)" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+        <mxCell id="U6" value="Dynamic Data&lt;br/&gt;(Journal)" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
           <mxGeometry x="650" y="350" width="100" height="60" as="geometry"/>
         </mxCell>
-
+        
         <!-- Vector Databases -->
         <mxCell id="U7" value="Vector Databases" style="shape=cylinder;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
           <mxGeometry x="850" y="150" width="100" height="60" as="geometry"/>
         </mxCell>
-
+        
         <!-- API Integrations -->
         <mxCell id="U8" value="API Integrations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cce6ff;strokeColor=#3399ff;" vertex="1" parent="1">
           <mxGeometry x="850" y="400" width="140" height="60" as="geometry"/>
         </mxCell>
-
+        
         <!-- Feedback Loop -->
         <mxCell id="U9" value="Feedback Loop" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffcc;strokeColor=#999900;" vertex="1" parent="1">
           <mxGeometry x="400" y="450" width="80" height="80" as="geometry"/>
         </mxCell>
-
+        
+        <!-- Secret Manager -->
+        <mxCell id="U10" value="Secret Manager" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffcccc;strokeColor=#ff6666;" vertex="1" parent="1">
+          <mxGeometry x="200" y="500" width="100" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- Agent IWS System -->
+        <mxCell id="U11" value="Agent IWS System" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5c2e0;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="650" y="500" width="160" height="80" as="geometry"/>
+        </mxCell>
+        
         <!-- Edges -->
-
+        
         <!-- User to User Interface -->
         <mxCell id="E1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" edge="1" parent="1" source="U1" target="U2">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- User Interface to Miss Potts -->
         <mxCell id="E2" style="endArrow=block;html=1;" edge="1" parent="1" source="U2" target="U3">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- Miss Potts to Static Data Component -->
         <mxCell id="E3" style="endArrow=block;html=1;" edge="1" parent="1" source="U3" target="U5">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- Miss Potts to Dynamic Data Component -->
         <mxCell id="E4" style="endArrow=block;html=1;" edge="1" parent="1" source="U3" target="U6">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- Miss Potts to Jarvis -->
         <mxCell id="E5" style="endArrow=block;html=1;" edge="1" parent="1" source="U3" target="U4">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- Jarvis to User Interface -->
         <mxCell id="E6" style="endArrow=block;html=1;" edge="1" parent="1" source="U4" target="U2">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- Jarvis to Vector Databases -->
         <mxCell id="E7" style="endArrow=block;html=1;" edge="1" parent="1" source="U4" target="U7">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- Static Data Component to Vector Databases -->
         <mxCell id="E8" style="endArrow=block;html=1;" edge="1" parent="1" source="U5" target="U7">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- Dynamic Data Component to Vector Databases -->
         <mxCell id="E9" style="endArrow=block;html=1;" edge="1" parent="1" source="U6" target="U7">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- Vector Databases to Jarvis -->
         <mxCell id="E10" style="endArrow=block;html=1;" edge="1" parent="1" source="U7" target="U4">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- API Integrations to Miss Potts -->
         <mxCell id="E11" style="endArrow=block;html=1;" edge="1" parent="1" source="U8" target="U3">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- API Integrations to Vector Databases -->
         <mxCell id="E12" style="endArrow=block;html=1;" edge="1" parent="1" source="U8" target="U7">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- Jarvis to Feedback Loop -->
         <mxCell id="E13" style="endArrow=block;html=1;" edge="1" parent="1" source="U4" target="U9">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
         <!-- Feedback Loop to Miss Potts -->
         <mxCell id="E14" style="endArrow=block;html=1;" edge="1" parent="1" source="U9" target="U3">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
-
-        <!-- API Integrations to Vector Databases -->
-        <mxCell id="E15" style="endArrow=block;html=1;" edge="1" parent="1" source="U8" target="U7">
+        
+        <!-- API Integrations to Secret Manager -->
+        <mxCell id="E15" style="endArrow=block;html=1;" edge="1" parent="1" source="U8" target="U10">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-
+        
+        <!-- Secret Manager to Miss Potts -->
+        <mxCell id="E16" style="endArrow=block;html=1;" edge="1" parent="1" source="U10" target="U3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Agent IWS System to Miss Potts -->
+        <mxCell id="E17" style="endArrow=block;html=1;" edge="1" parent="1" source="U11" target="U3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Agent IWS System to Jarvis -->
+        <mxCell id="E18" style="endArrow=block;html=1;" edge="1" parent="1" source="U11" target="U4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
         <!-- Feedback Loop to User -->
-        <mxCell id="E16" style="endArrow=block;html=1;" edge="1" parent="1" source="U9" target="U1">
+        <mxCell id="E19" style="endArrow=block;html=1;" edge="1" parent="1" source="U9" target="U1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Secret Manager to API Integrations -->
+        <mxCell id="E20" style="endArrow=block;html=1;" edge="1" parent="1" source="U10" target="U8">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Agent IWS System to Vector Databases -->
+        <mxCell id="E21" style="endArrow=block;html=1;" edge="1" parent="1" source="U11" target="U7">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         
