@@ -1,40 +1,14 @@
-version: '3.8'
-
 services:
-  frontend:
-    build: ./frontend
-    ports:
-      - "5173:5173"
+  data:
+    build: ./data
     volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - ./data/pdfs:/app/pdfs
+      - ./data/chroma_db:/app/chroma_db
     environment:
-      - VITE_API_URL=http://localhost:8000
-    depends_on:
-      - backend
-
-  backend:
-    build: ./backend
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./backend:/app
-    environment:
-      - DATABASE_URL=postgresql://myappuser:yourpassword@db:5432/dietbot
-      - SECRET_KEY=your_secret_key_here
-    depends_on:
-      - db
-
-  db:
-    image: postgres:15
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=myappuser
-      - POSTGRES_PASSWORD=yourpassword
-      - POSTGRES_DB=dietbot
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - PYTHONPATH=/app
+      - CHROMA_DB_PATH=/app/chroma_db
+      - EMBEDDING_MODEL_NAME=all-mpnet-base-v2
+      - COLLECTION_NAME=pdf_embeddings
 
 volumes:
-  postgres_data:
+  chroma_db:
