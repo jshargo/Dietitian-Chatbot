@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.name }}</h1>
+    <h2>Dashboard</h2>
+
+    <h3>Items Added Today</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Dish Name</th>
+                <th>Calories</th>
+                <th>Protein (g)</th>
+                <th>Fat (g)</th>
+                <th>Carbs (g)</th>
+                <th>Fiber (g)</th>
+                <th>Sodium (mg)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for nutrient in daily_nutrients %}
+                <tr>
+                    <td>{{ nutrient.dish_name }}</td>
+                    <td>{{ nutrient.calories }}</td>
+                    <td>{{ nutrient.protein }}</td>
+                    <td>{{ nutrient.fat }}</td>
+                    <td>{{ nutrient.carbs }}</td>
+                    <td>{{ nutrient.fiber }}</td>
+                    <td>{{ nutrient.sodium }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('add_dish') }}">Add New Dish</a>
+    <a href="{{ url_for('show_comparison', dish_name='DishName') }}">Show Comparison</a>
+</body>
+</html>

@@ -1,0 +1,14 @@
+services:
+  data:
+    build: ./data
+    volumes:
+      - ./data/pdfs:/app/pdfs
+      - ./data/chroma_db:/app/chroma_db
+    environment:
+      - PYTHONPATH=/app
+      - CHROMA_DB_PATH=/app/chroma_db
+      - EMBEDDING_MODEL_NAME=all-mpnet-base-v2
+      - COLLECTION_NAME=pdf_embeddings
+
+volumes:
+  chroma_db:

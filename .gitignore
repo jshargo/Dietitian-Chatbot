@@ -1,0 +1,19 @@
+# Virtual Environment
+.venv/
+*/.venv/
+**/.venv/
+
+# Environment Variables
+.env
+*/.env
+**/.env
+
+# Node Modules
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# PDFs
+pdfs/
+*/pdfs/
+**/pdfs/
