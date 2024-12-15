@@ -28,7 +28,6 @@ def generate_answer(query: str, retrieved_results: dict, llm_model_name: str = "
     return answer
 
 if __name__ == "__main__":
-    # Example usage: after embedding the PDF using embed_pdf.py
     # Run this script to query and generate an answer
     collection_name = "pdf_embeddings"
     embedding_model_name = "all-mpnet-base-v2"
@@ -38,5 +37,5 @@ if __name__ == "__main__":
     results = query_chroma(query=user_query, collection_name=collection_name, chroma_db_path=chroma_db_path, embedding_model_name=embedding_model_name, n_results=3)
     print("Retrieved results:", results)
 
-    final_answer = generate_answer(query=user_query, retrieved_results=results, llm_model_name="meta-llama/Llama-2-7b-chat-hf")
+    final_answer = generate_answer(query=user_query, retrieved_results=results, llm_model_name="meta-llama/Llama-3.2-1B")
     print("Final Answer:", final_answer)

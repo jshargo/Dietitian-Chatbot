@@ -37,7 +37,7 @@ def split_list(input_list: list, slice_size: int, overlap: int = 5) -> list[list
             chunks.append(chunk)
     return chunks
 
-def chunk_pdf_text(pages_and_texts: list[dict], num_sentence_chunk_size: int = 10, overlap: int = 5) -> pd.DataFrame:
+def chunk_pdf_text(pages_and_texts: list[dict], num_sentence_chunk_size: int = 10, overlap: int = 3) -> pd.DataFrame:
     for item in pages_and_texts:
         item["sentences"] = split_into_sentences(item["text"])
 
@@ -110,7 +110,6 @@ def embed_pdf_into_chroma(pdf_path: str, collection_name: str = "pdf_embeddings"
     print("PDF embedding process complete.")
 
 if __name__ == "__main__":
-    # Example usage: just run this file to embed the PDF
     pdf_path = "pdfs/nutrition_handbook.pdf"
     collection_name = "pdf_embeddings"
     embedding_model_name = "all-mpnet-base-v2"
