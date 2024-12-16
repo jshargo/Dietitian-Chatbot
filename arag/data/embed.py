@@ -72,7 +72,7 @@ def embed_chunks(df: pd.DataFrame, embedding_model_name: str = "all-mpnet-base-v
 
     return filtered
 
-def store_in_chroma(chunks: list[dict], collection_name: str, chroma_db_path: str = "./chroma_db", embedding_model_name: str = "all-mpnet-base-v2") -> None:
+def store_in_chroma(chunks: list[dict], collection_name: str, chroma_db_path: str = "./data/chroma_db", embedding_model_name: str = "all-mpnet-base-v2") -> None:
     chroma_client = chromadb.PersistentClient(path=chroma_db_path)
 
     embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
@@ -98,7 +98,7 @@ def store_in_chroma(chunks: list[dict], collection_name: str, chroma_db_path: st
     )
     print(f"Embeddings stored in Chroma collection '{collection_name}' at {chroma_db_path}.")
 
-def embed_pdf_into_chroma(pdf_path: str, collection_name: str = "pdf_embeddings", chroma_db_path: str = "./chroma_db",
+def embed_pdf_into_chroma(pdf_path: str, collection_name: str = "pdf_embeddings", chroma_db_path: str = "./data/chroma_db",
                           embedding_model_name: str = "all-mpnet-base-v2") -> None:
     if not os.path.exists(pdf_path):
         raise FileNotFoundError(f"File '{pdf_path}' doesn't exist.")
@@ -110,9 +110,9 @@ def embed_pdf_into_chroma(pdf_path: str, collection_name: str = "pdf_embeddings"
     print("PDF embedding process complete.")
 
 if __name__ == "__main__":
-    pdf_path = "pdfs/nutrition_handbook.pdf"
+    pdf_path = "data/pdfs/example.pdf"  # Update this to your actual PDF
     collection_name = "pdf_embeddings"
     embedding_model_name = "all-mpnet-base-v2"
-    chroma_db_path = "./chroma_db"
+    chroma_db_path = "./data/chroma_db"
 
     embed_pdf_into_chroma(pdf_path=pdf_path, collection_name=collection_name, chroma_db_path=chroma_db_path, embedding_model_name=embedding_model_name)

@@ -1,14 +1,16 @@
 services:
-  data:
-    build: ./data
+  backend:
+    build: ./backend
+    container_name: rag-backend
+    ports:
+      - "8000:8000"
     volumes:
-      - ./data/pdfs:/app/pdfs
-      - ./data/chroma_db:/app/chroma_db
-    environment:
-      - PYTHONPATH=/app
-      - CHROMA_DB_PATH=/app/chroma_db
-      - EMBEDDING_MODEL_NAME=all-mpnet-base-v2
-      - COLLECTION_NAME=pdf_embeddings
+      - ./data:/app/data
 
-volumes:
-  chroma_db:
+  frontend:
+    build: ./frontend
+    container_name: rag-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend

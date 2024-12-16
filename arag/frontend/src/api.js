@@ -44,3 +44,9 @@ export const askQuestion = (token, query) => {
     headers: { Authorization: `Bearer ${token}` }
   });
 };
+
+export const askQuestionStream = (query) => {
+  const token = localStorage.getItem('token');
+  const encodedQuery = encodeURIComponent(query);
+  return `http://localhost:8000/rag/ask-stream?query=${encodedQuery}&token=${token}`;
+};

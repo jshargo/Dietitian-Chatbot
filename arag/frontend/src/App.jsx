@@ -1,56 +1,45 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
-import Register from './components/Register.jsx';
-import Login from './components/Login.jsx';
-import Profile from './components/Profile.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
-import './App.css';
+import React, { useState } from 'react'
+
 function App() {
-  const [username, setUsername] = useState(localStorage.getItem('username'));
+  const [query, setQuery] = useState('');
+  const [answer, setAnswer] = useState('');
 
-  const handleLogin = (username) => {
-    setUsername(username);
-  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setAnswer('');
+    const source = new EventSource(`http://localhost:8000/stream?query=${encodeURIComponent(query)}`);
 
-  const handleLogout = () => {
-    localStorage.removeItem('username');
-    setUsername(null);
+    source.onmessage = (event) => {
+      if (event.data === '[DONE]') {
+        source.close();
+      } else {
+        setAnswer(prev => prev + event.data + "\n");
+      }
+    };
+
+    source.onerror = () => {
+      source.close();
+    };
   };
 
   return (
-    <Router>
-      <div>
-        <h1 className="welcome-header">Welcome!</h1>
-        <nav className="auth-nav">
-          {!username ? (
-            <>
-              <Link to="/register" className="auth-button">Register</Link>
-              <Link to="/login" className="auth-button">Login</Link>
-            </>
-          ) : (
-            <>
-              <Link to="/profile" className="auth-button">Profile</Link>
-              <button className="auth-button" onClick={handleLogout}>Logout</button>
-            </>
-          )}
-        </nav>
-
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
-          <Route 
-            path="/profile" 
-            element={
-              <ProtectedRoute>
-                <Profile username={username} />
-              </ProtectedRoute>
-            } 
-          />
-          <Route path="/" element={null} />
-        </Routes>
+    <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
+      <h1>RAG Chatbot</h1>
+      <form onSubmit={handleSubmit}>
+        <input 
+          type="text" 
+          placeholder="Ask a question..."
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+        />
+        <button type="submit" style={{ padding: "10px" }}>Send</button>
+      </form>
+      <div style={{ whiteSpace: "pre-wrap", marginTop: "20px", background: "#f0f0f0", padding: "10px" }}>
+        {answer}
       </div>
-    </Router>
+    </div>
   );
 }
 
-export default App;
+export default App
