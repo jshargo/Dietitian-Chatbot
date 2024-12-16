@@ -17,3 +17,12 @@ node_modules/
 pdfs/
 */pdfs/
 **/pdfs/
+
+package.json
+package-lock.json
+
+pycache/
+*/pycache/
+**/pycache/
+
+.DS_Store
