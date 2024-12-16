@@ -1,4 +1,4 @@
-# Retireval Augmented Dietitian Chatbot 
+# Retrieval Augmented Dietitian Chatbot 
 
 This project, which is in progress, aims to create an emotionally conscious dietitian chatbot support system to help people with lifestyle diseases. Given a set of PDF or other formatted documents, the system will ingest, process, and store embeddings of any textual data, and add it to a corpus where it will be used as the knowledge base for the chatbot. Then, the embeddings are loaded, along with the user query which is also embedded, and passed onto a similarity search to retrieve the most relevant documents. The documents are then passed onto a LLM to generate a response, grounding the chatbot's reasoning. Make sure to run the scripts in a venv, with all the dependencies installed. Python version 3.10 or above is recommended.
 
