@@ -1,0 +1,89 @@
+Here are **50 different ways** users might express their intent for **Personalized Health Advice**, grouped into **distinct clusters** to ensure comprehensive coverage.
+
+---
+
+### **User Expressions for Personalized Health Advice**
+
+#### **Cluster 1: Seeking Advice for Specific Health Conditions (15 Statements)**  
+1. "What should I eat to manage my diabetes?"  
+2. "Can you help me with a diet for high blood pressure?"  
+3. "I need advice on managing cholesterol through food."  
+4. "What foods should I avoid with my kidney condition?"  
+5. "Can you suggest meals for improving my heart health?"  
+6. "What’s a good diet for someone with arthritis?"  
+7. "How can I manage my IBS symptoms through my diet?"  
+8. "What foods are good for my liver health?"  
+9. "I’m looking for diet tips to manage PCOS."  
+10. "What’s a good eating plan for thyroid issues?"  
+11. "Can you help me with meals for my anemia?"  
+12. "What should I eat to boost my immune system?"  
+13. "I want advice on managing my acid reflux with food."  
+14. "What’s the best diet for someone with osteoporosis?"  
+15. "Can you help me eat better to prevent migraines?"
+
+---
+
+#### **Cluster 2: Weight and Fitness-Related Advice (10 Statements)**  
+1. "What should I eat to lose weight healthily?"  
+2. "Can you help me with a meal plan for gaining muscle?"  
+3. "I need advice on food for weight maintenance."  
+4. "What should I eat before and after workouts?"  
+5. "Can you give me tips for reducing belly fat through diet?"  
+6. "How do I eat to improve my stamina?"  
+7. "What’s the best food plan for improving my fitness level?"  
+8. "How do I gain weight without eating junk food?"  
+9. "Can you suggest foods to help with endurance training?"  
+10. "What’s a good diet for improving my athletic performance?"
+
+---
+
+#### **Cluster 3: Tailored Advice for Specific Diet Goals (10 Statements)**  
+1. "What’s a good diet for boosting my energy levels?"  
+2. "How do I eat to get better sleep?"  
+3. "What foods can help improve my mental focus?"  
+4. "Can you suggest meals to improve my gut health?"  
+5. "What should I eat to reduce inflammation?"  
+6. "How can I improve my digestion through diet?"  
+7. "What’s the best way to detox my body with food?"  
+8. "Can you give me tips for reducing sugar in my diet?"  
+9. "What foods are good for improving my skin?"  
+10. "How can I include more antioxidants in my meals?"
+
+---
+
+#### **Cluster 4: Age-Related Health Advice (5 Statements)**  
+1. "What’s a good diet for someone my age?"  
+2. "Can you suggest meals to maintain bone health as I get older?"  
+3. "How can I adjust my diet for healthy aging?"  
+4. "What foods are good for memory as I age?"  
+5. "I need advice on eating well during menopause."
+
+---
+
+#### **Cluster 5: Advice for Chronic Illness Management (5 Statements)**  
+1. "Can you suggest meals for managing chronic fatigue?"  
+2. "What’s a good diet for managing my autoimmune condition?"  
+3. "How can I adjust my meals for chronic pain management?"  
+4. "I need help with meals for managing my depression."  
+5. "What foods are good for reducing chronic inflammation?"
+
+---
+
+#### **Cluster 6: Preventative Health and Wellness (5 Statements)**  
+1. "What’s a good diet for preventing heart disease?"  
+2. "Can you suggest foods to lower my risk of cancer?"  
+3. "How do I eat to avoid lifestyle diseases?"  
+4. "What’s the best way to eat for overall longevity?"  
+5. "How can I use food to stay as healthy as possible?"
+
+---
+
+### **Summary of Clusters**
+1. **Seeking Advice for Specific Health Conditions (15 Statements):** Users need tailored recommendations for managing health issues like diabetes, PCOS, or arthritis.  
+2. **Weight and Fitness-Related Advice (10 Statements):** Focus on weight management, muscle building, or performance improvement.  
+3. **Tailored Advice for Specific Diet Goals (10 Statements):** Users request guidance on improving energy, sleep, digestion, and other specific health goals.  
+4. **Age-Related Health Advice (5 Statements):** Focused on eating habits for healthy aging and age-specific needs.  
+5. **Advice for Chronic Illness Management (5 Statements):** Tailored help for chronic conditions such as autoimmune diseases or chronic pain.  
+6. **Preventative Health and Wellness (5 Statements):** Users ask for proactive tips to maintain long-term health.
+
+This grouping ensures the chatbot can provide personalized responses to meet diverse user needs. Let me know if you'd like chatbot replies tailored to these clusters!
