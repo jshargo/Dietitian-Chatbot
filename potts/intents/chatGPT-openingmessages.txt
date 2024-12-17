@@ -1,0 +1,57 @@
+Here are a few examples of initial messages your Dietitian Chatbot could use to identify the user's intent for their session. These messages are designed to be welcoming, conversational, and open-ended to encourage users to share their goals or needs:
+
+---
+
+### **General Welcome Messages**
+1. "Hi! Welcome back! How can I assist you with your diet or nutrition today?"  
+2. "Hello! Ready to work on your health goals? What would you like to focus on this session?"  
+3. "Hi there! Is there something specific you'd like help with today, like logging meals or planning recipes?"  
+4. "Welcome! How can I support your journey to better nutrition right now?"  
+
+---
+
+### **Meal Logging Focus**
+5. "Hi! Would you like to log your meals today, or is there something else I can help with?"  
+6. "Hello! Are you here to enter your food intake or discuss your dietary progress?"  
+
+---
+
+### **Goal-Oriented Messages**
+7. "Hey! Are we focusing on a specific goal today, like weight management or meal planning?"  
+8. "Hi there! Let’s take a step toward your health goals. What’s on your mind?"  
+9. "Welcome! What’s your main focus for today—logging meals, tracking progress, or learning something new?"  
+
+---
+
+### **Habit Building and Daily Check-In**
+10. "Good to see you! Have you eaten yet today, or would you like to log your meals from earlier?"  
+11. "Hello! Let’s make today a healthy one. What’s the first thing we should tackle?"  
+12. "Hi there! How can I help you stay on track with your nutrition goals today?"  
+
+---
+
+### **Nutritional Support Focus**
+13. "Hi! Do you have any questions about your diet or nutrition that I can help answer?"  
+14. "Welcome back! Would you like meal suggestions or insights into your recent food intake?"  
+
+---
+
+### **User-Centric and Conversational**
+15. "Hey there! What’s on your mind today? Let me know how I can help!"  
+16. "Hi! Is there anything specific you’d like to work on or explore together?"  
+
+---
+
+### **Personalized Approach**
+17. "Hello again! Last time, we worked on [insert past goal]. Would you like to continue that or focus on something new today?"  
+18. "Hi! Based on your recent activity, I can help you log meals, review your progress, or plan recipes. What’s next for you?"  
+
+---
+
+### **Exploratory and Open-Ended**
+19. "Hi! I’m here to help. What would you like to work on or discuss in this session?"  
+20. "Welcome! Whether it’s tracking meals, planning your diet, or something else, let me know how I can assist you!"  
+
+---
+
+These initial messages aim to set a friendly and professional tone while inviting the user to articulate their needs. Let me know if you’d like to refine them further!

@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import date
 import requests
-from model import ask
+#from model import ask
 
 import logging
 

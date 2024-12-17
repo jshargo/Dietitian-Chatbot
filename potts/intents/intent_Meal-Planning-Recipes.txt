@@ -1,0 +1,144 @@
+Here are **100 different ways** users might express their intent for **Meal Planning and Recipes**, grouped into **distinct clusters** for better organization.
+
+---
+
+### **User Expressions for Meal Planning and Recipes**
+
+#### **Cluster 1: General Meal Planning (25 Statements)**  
+1. "Can you help me plan meals for the week?"  
+2. "I need a meal plan for the next three days."  
+3. "Can you create a balanced meal plan for me?"  
+4. "What’s a good weekend meal plan?"  
+5. "Can you recommend meals for my week ahead?"  
+6. "I’m struggling to stick to a meal plan. Can you help?"  
+7. "What’s a simple one-day meal plan I can follow?"  
+8. "I need help organizing my meals for the month."  
+9. "Can you give me meal prep ideas for the week?"  
+10. "How do I plan meals for a busy work schedule?"  
+11. "Can you help me plan meals around my workouts?"  
+12. "What’s a good routine for planning meals?"  
+13. "I’m looking for meal planning tips for beginners."  
+14. "How can I plan my meals to save time?"  
+15. "I need ideas for a weekly meal schedule."  
+16. "Can you help me plan meals for my family?"  
+17. "What’s a good plan for quick meals on weekdays?"  
+18. "I want to simplify my meal planning—can you assist?"  
+19. "How do I start planning meals for a healthy diet?"  
+20. "Can you help me with meal plans for my partner and me?"  
+21. "I need a personalized meal plan for my lifestyle."  
+22. "How do I plan meals without repeating the same dishes?"  
+23. "Can you help me organize meals for a tight schedule?"  
+24. "I need tips on meal planning for a small household."  
+25. "How do I plan meals when I’m always on the go?"
+
+---
+
+#### **Cluster 2: Specific Meal Requests (20 Statements)**  
+1. "What should I cook for dinner tonight?"  
+2. "Can you suggest some healthy lunch ideas?"  
+3. "I’m looking for new breakfast recipes."  
+4. "What’s a good snack to prepare for the afternoon?"  
+5. "Can you recommend a simple dessert recipe?"  
+6. "What are some good ideas for light meals?"  
+7. "I need ideas for kid-friendly dinners."  
+8. "What’s a good recipe for a romantic dinner?"  
+9. "I’m hosting a dinner party. What should I cook?"  
+10. "Can you suggest meals for a cozy weekend dinner?"  
+11. "What are some nutritious meals I can prep ahead?"  
+12. "What are good meals for picky eaters?"  
+13. "I need quick recipes for my lunch breaks."  
+14. "What’s a good recipe for a lazy Sunday?"  
+15. "Can you suggest a creative brunch menu?"  
+16. "I need some one-pot meal ideas."  
+17. "What are some easy meals for meal prep?"  
+18. "Can you give me a recipe for a slow-cooker meal?"  
+19. "What are some refreshing summer recipes?"  
+20. "I need some cozy winter meal ideas."
+
+---
+
+#### **Cluster 3: Diet-Specific Meal Plans (20 Statements)**  
+1. "Can you help me with a gluten-free meal plan?"  
+2. "I need recipes for a vegan diet."  
+3. "Can you suggest low-carb meals for dinner?"  
+4. "I’m looking for keto-friendly recipes."  
+5. "What are some high-protein meal ideas?"  
+6. "Can you recommend meals for a heart-healthy diet?"  
+7. "What’s a good meal plan for someone with diabetes?"  
+8. "I need meals that are good for weight loss."  
+9. "Can you suggest recipes for a dairy-free diet?"  
+10. "What are good meals for someone with food allergies?"  
+11. "I need help planning meals for a low-sodium diet."  
+12. "Can you suggest recipes for a Mediterranean diet?"  
+13. "I’m looking for Paleo-friendly meal ideas."  
+14. "What meals are good for building muscle?"  
+15. "Can you recommend plant-based meal prep ideas?"  
+16. "What’s a good meal plan for balanced macros?"  
+17. "I need meal ideas that are good for digestion."  
+18. "What are some recipes for an anti-inflammatory diet?"  
+19. "Can you help me with meals for intermittent fasting?"  
+20. "What are good meals for improving gut health?"
+
+---
+
+#### **Cluster 4: Recipe Recommendations (20 Statements)**  
+1. "What’s the best recipe for lasagna?"  
+2. "Do you have a recipe for homemade bread?"  
+3. "How do I make a perfect stir-fry?"  
+4. "What’s a good smoothie recipe for breakfast?"  
+5. "Can you share a recipe for a hearty soup?"  
+6. "What’s the best way to make pancakes?"  
+7. "Can you give me a recipe for a quick salad dressing?"  
+8. "What’s a simple recipe for roasted vegetables?"  
+9. "How do I make fluffy mashed potatoes?"  
+10. "Do you have a recipe for chocolate chip cookies?"  
+11. "What’s a good marinade for chicken?"  
+12. "Can you share a recipe for a classic curry?"  
+13. "What’s a good way to make homemade pasta?"  
+14. "Can you give me a recipe for tacos?"  
+15. "What’s a good recipe for guacamole?"  
+16. "How do I make a simple veggie stir-fry?"  
+17. "Can you suggest a recipe for stuffed peppers?"  
+18. "What’s a good way to cook salmon?"  
+19. "Do you have a recipe for energy balls?"  
+20. "How do I bake the perfect pie crust?"
+
+---
+
+#### **Cluster 5: Budget-Friendly Meal Planning (10 Statements)**  
+1. "How can I plan meals on a budget?"  
+2. "What are some cheap and healthy meal ideas?"  
+3. "I need recipes that use affordable ingredients."  
+4. "What’s a good meal plan for saving money?"  
+5. "Can you suggest inexpensive meals for the family?"  
+6. "I’m looking for low-cost vegetarian recipes."  
+7. "What are some budget-friendly meal prep ideas?"  
+8. "How can I eat healthy without spending too much?"  
+9. "What are some affordable snacks I can make?"  
+10. "Can you help me with cheap meal planning for the week?"
+
+---
+
+#### **Cluster 6: Ingredient-Specific Requests (10 Statements)**  
+1. "What can I make with chicken?"  
+2. "I have leftover rice. Any ideas for recipes?"  
+3. "What’s a good recipe using sweet potatoes?"  
+4. "How can I use zucchini in a dish?"  
+5. "I have too many tomatoes—any recipe suggestions?"  
+6. "What’s a creative way to use lentils?"  
+7. "Can you suggest meals with avocado?"  
+8. "What can I make with canned beans?"  
+9. "How do I use up fresh herbs in recipes?"  
+10. "What are some dishes I can make with mushrooms?"
+
+---
+
+### **Summary of Clusters**
+1. **General Meal Planning (25 Statements):** Requests for assistance in organizing meals for various time frames or purposes.  
+2. **Specific Meal Requests (20 Statements):** Focused on immediate or specific meal ideas.  
+3. **Diet-Specific Meal Plans (20 Statements):** Tailored plans for specific diets or health needs.  
+4. **Recipe Recommendations (20 Statements):** Requests for specific recipes or cooking methods.  
+5. **Budget-Friendly Meal Planning (10 Statements):** Requests for economical meals or meal prep ideas.  
+6. **Ingredient-Specific Requests (10 Statements):** Inquiries about meals focused on particular ingredients.
+
+This clustering approach ensures all user intents related to **Meal Planning and Recipes** are covered comprehensively and can guide chatbot responses effectively. Let me know if you need example replies for these clusters!
