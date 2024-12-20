@@ -1,17 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import LoadingBar from './components/LoadingBar';
+import './App.css';
 
 function App() {
   const [query, setQuery] = useState('');
   const [answer, setAnswer] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setAnswer('');
+    setIsLoading(true);
+    
     const source = new EventSource(`http://localhost:8000/stream?query=${encodeURIComponent(query)}`);
 
     source.onmessage = (event) => {
       if (event.data === '[DONE]') {
         source.close();
+        setIsLoading(false);
       } else {
         setAnswer(prev => prev + event.data + "\n");
       }
@@ -19,27 +25,37 @@ function App() {
 
     source.onerror = () => {
       source.close();
+      setIsLoading(false);
     };
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
-      <h1>RAG Chatbot</h1>
-      <form onSubmit={handleSubmit}>
-        <input 
-          type="text" 
-          placeholder="Ask a question..."
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-        />
-        <button type="submit" style={{ padding: "10px" }}>Send</button>
-      </form>
-      <div style={{ whiteSpace: "pre-wrap", marginTop: "20px", background: "#f0f0f0", padding: "10px" }}>
-        {answer}
+    <div className="chat-container">
+      <h1 className="chat-title">RAG Chatbot</h1>
+      <div className="chat-box">
+        <form onSubmit={handleSubmit} className="chat-form">
+          <input 
+            type="text" 
+            placeholder="Ask a question..."
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            className="chat-input"
+          />
+          <button type="submit" className="chat-button">Send</button>
+        </form>
+        
+        <LoadingBar isLoading={isLoading} />
+        
+        {answer && (
+          <div className="answer-container">
+            <div className="answer-box">
+              {answer}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export default App
+export default App;

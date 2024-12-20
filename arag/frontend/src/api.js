@@ -48,5 +48,5 @@ export const askQuestion = (token, query) => {
 export const askQuestionStream = (query) => {
   const token = localStorage.getItem('token');
   const encodedQuery = encodeURIComponent(query);
-  return `http://localhost:8000/rag/ask-stream?query=${encodedQuery}&token=${token}`;
+  return `http://localhost:8000/stream?query=${encodedQuery}`;
 };
