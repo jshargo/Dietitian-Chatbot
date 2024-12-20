@@ -1,43 +1,118 @@
+import torch
 import chromadb
 from sentence_transformers import SentenceTransformer
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline as hf_pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-def query_chroma(query: str, collection_name: str, chroma_db_path: str = "./data/chroma_db", embedding_model_name: str = "all-mpnet-base-v2", n_results: int = 3) -> dict:
-    embedding_model = SentenceTransformer(embedding_model_name, device="cpu")
+# -----------------------------------------
+# Global Configuration & One-Time Initialization
+# -----------------------------------------
+
+# Default values used by app.py
+DEFAULT_CHROMA_DB_PATH = "../data/chromadb"
+DEFAULT_EMBEDDING_MODEL_NAME = "dunzhang/stella_en_1.5B_v5"
+DEFAULT_LLM_MODEL_NAME = "meta-llama/Llama-3.2-1B-Instruct" 
+DEFAULT_N_RESULTS = 3
+
+# Initialize device
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+# Load the embedding model once
+embedding_model = SentenceTransformer(DEFAULT_EMBEDDING_MODEL_NAME, device="cpu")
+
+# Connect to Chroma once
+chroma_client = chromadb.PersistentClient(path=DEFAULT_CHROMA_DB_PATH)
+
+# Load LLM model and tokenizer once
+tokenizer = AutoTokenizer.from_pretrained(DEFAULT_LLM_MODEL_NAME, trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained(DEFAULT_LLM_MODEL_NAME, device_map="auto", trust_remote_code=True)
+model.eval()
+model = model.to(device)
+
+# System prompt (adapted from the optimized code)
+SYSTEM_PROMPT = """You are a strictly controlled assistant that ONLY uses provided context. Follow these rules WITHOUT EXCEPTION:
+
+1. You must ONLY use information explicitly stated in the provided context
+2. If the context doesn't contain the exact information needed, respond ONLY with: "I don't have enough information to answer that question"
+3. DO NOT use any external knowledge or common sense, even if you know it's correct
+4. DO NOT make assumptions or inferences beyond what's directly stated
+5. DO NOT provide partial answers
+6. Your response must begin with "Based on the provided context, " followed by your answer
+7. If you're unsure if the context fully answers the question, respond with "I don't have enough information to answer that question"
+
+Violation of any of these rules is not acceptable."""
+
+# -----------------------------------------
+# Functions
+# -----------------------------------------
+
+def query_chroma(
+    query: str, 
+    collection_name: str, 
+    chroma_db_path: str = DEFAULT_CHROMA_DB_PATH,  
+    embedding_model_name: str = DEFAULT_EMBEDDING_MODEL_NAME,
+    n_results: int = DEFAULT_N_RESULTS
+) -> dict:
+    # Note: For optimal speed, we're not re-initializing embeddings or client
+    # even if parameters differ. We'll ignore embedding_model_name and chroma_db_path
+    # here to avoid overhead. We rely on globally initialized objects.
+
     query_embedding = embedding_model.encode(query).tolist()
+    try:
+        # Get the requested collection (assuming it exists)
+        collection = chroma_client.get_collection(name=collection_name)
+        results = collection.query(
+            query_embeddings=[query_embedding],
+            n_results=n_results
+        )
+        return results
+    except Exception as e:
+        print(f"Error querying ChromaDB: {str(e)}")
+        return {"documents": [[]]}  # Return empty results on error
 
-    chroma_client = chromadb.PersistentClient(path=chroma_db_path)
-    collection = chroma_client.get_collection(name=collection_name)
 
-    results = collection.query(
-        query_embeddings=[query_embedding],
-        n_results=n_results
-    )
-    return results
+def generate_answer(
+    query: str,
+    retrieved_results: dict,
+    llm_model_name: str = DEFAULT_LLM_MODEL_NAME,
+    max_new_tokens: int = 512
+) -> str:
+    # Extract context from retrieved documents
+    documents = retrieved_results.get("documents", [[]])
+    context_docs = documents[0] if documents and len(documents) > 0 else []
+    
+    # If no context is available, return the default response
+    if not context_docs:
+        return "I don't have enough information to answer that question"
+    
+    formatted_context = "\n\n".join(context_docs)
 
-def generate_answer(query: str, retrieved_results: dict, llm_model_name: str = "meta-llama/Llama-3.2-1B", max_length: int = 512) -> str:
-    context = ""
-    if "documents" in retrieved_results and retrieved_results["documents"]:
-        # Join all retrieved docs for context
-        for doc_list in retrieved_results["documents"]:
-            for doc in doc_list:
-                context += doc + "\n\n"
+    # Add explicit reminder about context limitations
+    prompt = f"""{SYSTEM_PROMPT}
 
-    prompt = f"""You are a helpful RAG assistant.
-When the user asks you a question, answer only based on the given context.
-If you can't find an answer based on the context, reply "I don't know".
+Context (ONLY use information from this context):
+{formatted_context}
 
-Context:
-{context}
+Remember: If the above context doesn't contain the exact information needed to answer the question, respond ONLY with "I don't have enough information to answer that question"
 
-Query: {query}
-Answer:"""
+Question: {query}
+Answer: """
 
-    tokenizer = AutoTokenizer.from_pretrained(llm_model_name)
-    model = AutoModelForCausalLM.from_pretrained(llm_model_name)
-    gen_pipeline = hf_pipeline("text-generation", model=model, tokenizer=tokenizer, device_map="auto")
+    # Reduce temperature to make responses more deterministic
+    with torch.inference_mode():
+        outputs = model.generate(
+            **tokenizer(prompt, return_tensors="pt").to(device),
+            max_new_tokens=max_new_tokens,
+            do_sample=True,
+            temperature=0.1,  # Reduced from 0.4 to make responses more consistent
+            pad_token_id=tokenizer.eos_token_id
+        )
 
-    output = gen_pipeline(prompt, max_length=max_length, do_sample=True, temperature=0.2)[0]["generated_text"]
-    # Extract answer after "Answer:"
-    answer = output.split("Answer:")[-1].strip()
+    # Decode and extract answer
+    answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    if "Answer:" in answer:
+        answer = answer.split("Answer:", 1)[-1].strip()
+    else:
+        answer = answer.strip()
+
+    print("Retrieved documents:", documents)
     return answer
