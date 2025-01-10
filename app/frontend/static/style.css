@@ -1,0 +1,82 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    background-color: white;
+    padding: 20px;
+    min-height: 100vh;
+    border-right: 1px solid #dee2e6;
+}
+
+.chat-section {
+    padding: 20px;
+    height: 100vh;
+}
+
+.user-stats, .daily-summary {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Chat styling */
+.chat {
+    height: calc(100vh - 40px);
+}
+
+.card {
+    height: 100%;
+    border-radius: 15px !important;
+}
+
+.msg_card_body {
+    overflow-y: auto;
+}
+
+.type_msg {
+    background-color: rgba(0,0,0,0.03) !important;
+    border: 0 !important;
+    color: black !important;
+    height: 60px !important;
+    overflow-y: auto;
+}
+
+.msg_cotainer {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+    border-radius: 25px;
+    background-color: #82ccdd;
+    padding: 10px;
+    position: relative;
+}
+
+.msg_cotainer_send {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+    border-radius: 25px;
+    background-color: #78e08f;
+    padding: 10px;
+    position: relative;
+}
+
+.user_img {
+    height: 50px;
+    width: 50px;
+    border: 1.5px solid #f5f6fa;
+}
+
+.user_img_msg {
+    height: 40px;
+    width: 40px;
+    border: 1.5px solid #f5f6fa;
+}

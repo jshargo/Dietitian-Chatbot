@@ -41,10 +41,6 @@ SYSTEM_PROMPT = """You are a strictly controlled assistant that ONLY uses provid
 
 Violation of any of these rules is not acceptable."""
 
-# -----------------------------------------
-# Functions
-# -----------------------------------------
-
 def query_chroma(
     query: str, 
     collection_name: str, 
@@ -52,10 +48,6 @@ def query_chroma(
     embedding_model_name: str = DEFAULT_EMBEDDING_MODEL_NAME,
     n_results: int = DEFAULT_N_RESULTS
 ) -> dict:
-    # Note: For optimal speed, we're not re-initializing embeddings or client
-    # even if parameters differ. We'll ignore embedding_model_name and chroma_db_path
-    # here to avoid overhead. We rely on globally initialized objects.
-
     query_embedding = embedding_model.encode(query).tolist()
     try:
         # Get the requested collection (assuming it exists)
@@ -67,7 +59,7 @@ def query_chroma(
         return results
     except Exception as e:
         print(f"Error querying ChromaDB: {str(e)}")
-        return {"documents": [[]]}  # Return empty results on error
+        return {"documents": [[]]}  
 
 
 def generate_answer(
