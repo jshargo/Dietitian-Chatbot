@@ -10,7 +10,8 @@ HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
 EMBED_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 embedder = SentenceTransformer(EMBED_MODEL_NAME)
 
-CSV_PATH = "/app/data/embeddings.csv"  
+# Use Docker path to match potts.py
+CSV_PATH = "/app/data/intent_embeddings/intent_embeddings_all.csv"
 
 df_knowledge = pd.DataFrame()
 try:
@@ -22,9 +23,6 @@ except Exception as e:
 def retrieve_knowledge(query: str, top_k=3):
     """
     Retrieve top-k relevant chunks from the CSV by embedding + similarity.
-    If you have precomputed embeddings in the CSV, you can do a direct 
-    similarity search. 
-    Otherwise, embed the 'text' column on the fly.
     """
     if df_knowledge.empty:
         return ["No knowledge base loaded."]

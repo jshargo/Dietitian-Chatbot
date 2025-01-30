@@ -1,5 +1,185 @@
+/* Incorporate a modern look with a minimal color palette: emerald green, white, and dark aqua.
+   Rounded edges for buttons, transition effects, and subtle animations for hover. */
+
+:root {
+    --emerald-green: #2ecc71;
+    --dark-aqua: #16a085;
+    --white: #ffffff;
+    --text-color: #2c3e50;
+    --gray-light: #f8f9fa;
+}
+
+/* Basic resets/body styling */
 body {
-    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    background-color: var(--gray-light);
+    color: var(--text-color);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Links */
+a {
+    color: var(--emerald-green);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--dark-aqua);
+}
+
+/* Nav or container areas if needed */
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: var(--white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Buttons */
+.button,
+.btn,
+input[type="submit"],
+button {
+    background-color: var(--emerald-green);
+    color: var(--white);
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.25s ease;
+    font-weight: 500;
+}
+
+.button:hover,
+.btn:hover,
+input[type="submit"]:hover,
+button:hover {
+    background-color: var(--dark-aqua);
+    transform: scale(1.03);
+}
+
+/* Form fields */
+input[type="text"],
+input[type="number"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0 16px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    transition: box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+select:focus {
+    outline: none;
+    box-shadow: 0 0 4px rgba(46, 204, 113, 0.5);
+}
+
+/* Titles */
+h1, h2, h3, h4, h5 {
+    color: var(--dark-aqua);
+    margin-bottom: 16px;
+}
+
+/* Cards for structured content */
+.card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.card-title {
+    margin-bottom: 16px;
+    color: var(--emerald-green);
+}
+
+/* Flash messages or success/danger messages */
+.flash {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+.flash.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+.flash.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Adjusting table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+table thead {
+    background-color: var(--emerald-green);
+    color: var(--white);
+}
+
+table tr:nth-child(even) {
+    background-color: #ecf0f1;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+/* Chat styling from original code with updated color palette */
+.chat {
+    height: calc(100vh - 40px);
+}
+.msg_card_body {
+    overflow-y: auto;
+}
+.type_msg {
+    background-color: rgba(0,0,0,0.03) !important;
+    border: 0 !important;
+    color: var(--text-color)!important;
+    height: 60px !important;
+    overflow-y: auto;
+}
+.msg_cotainer {
+    background-color: #b2f0d9;
+    color: var(--text-color);
+}
+.msg_cotainer_send {
+    background-color: #aaf0ad;
+    color: var(--text-color);
+}
+.user_img, .user_img_msg {
+    border: 1.5px solid #f5f6fa;
+    border-radius: 50%;
+}
+
+/* Additional chat page adjustments */
+.card-header {
+    background-color: var(--emerald-green);
+    color: var(--white);
+    border-radius: 8px 8px 0 0;
+}
+
+/* Subtle fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0px); }
+}
+.message {
+    animation: fadeIn 0.4s ease-in-out;
 }
 
 .sidebar {
@@ -27,56 +207,7 @@ body {
     gap: 10px;
 }
 
-/* Chat styling */
-.chat {
-    height: calc(100vh - 40px);
-}
-
 .card {
     height: 100%;
     border-radius: 15px !important;
-}
-
-.msg_card_body {
-    overflow-y: auto;
-}
-
-.type_msg {
-    background-color: rgba(0,0,0,0.03) !important;
-    border: 0 !important;
-    color: black !important;
-    height: 60px !important;
-    overflow-y: auto;
-}
-
-.msg_cotainer {
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: 10px;
-    border-radius: 25px;
-    background-color: #82ccdd;
-    padding: 10px;
-    position: relative;
-}
-
-.msg_cotainer_send {
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-right: 10px;
-    border-radius: 25px;
-    background-color: #78e08f;
-    padding: 10px;
-    position: relative;
-}
-
-.user_img {
-    height: 50px;
-    width: 50px;
-    border: 1.5px solid #f5f6fa;
-}
-
-.user_img_msg {
-    height: 40px;
-    width: 40px;
-    border: 1.5px solid #f5f6fa;
 }

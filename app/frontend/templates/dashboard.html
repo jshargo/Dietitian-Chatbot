@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         .chat-container {
             height: 400px;
@@ -34,78 +34,61 @@
     </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <!-- User Info Section -->
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Welcome, {{ user.name }}!</h5>
-                        <p>Age: {{ user.age }}</p>
-                        <p>Height: {{ user.height }} cm</p>
-                        <p>Weight: {{ user.weight }} kg</p>
-                        <p>Activity Level: {{ user.activity_level }}</p>
-                        <a href="{{ url_for('logout') }}" class="btn btn-danger">Sign Out</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Daily Nutrients Section -->
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Today's Meals</h5>
-                        {% if daily_nutrients %}
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Dish</th>
-                                        <th>Calories</th>
-                                        <th>Protein</th>
-                                        <th>Carbs</th>
-                                        <th>Fat</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for meal in daily_nutrients %}
-                                    <tr>
-                                        <td>{{ meal.dish_name }}</td>
-                                        <td>{{ meal.calories }}</td>
-                                        <td>{{ meal.protein }}</td>
-                                        <td>{{ meal.carbs }}</td>
-                                        <td>{{ meal.fat }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        {% else %}
-                            <p>No meals logged today</p>
-                        {% endif %}
-                        <a href="{{ url_for('add_dish') }}" class="btn btn-primary">Add Meal</a>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Welcome, {{ user.name }}!</h2>
+                <p>Age: {{ user.age }}</p>
+                <p>Height: {{ user.height }} cm</p>
+                <p>Weight: {{ user.weight }} kg</p>
+                <p>Activity Level: {{ user.activity_level }}</p>
+                <a href="{{ url_for('logout') }}" class="button">Sign Out</a>
             </div>
         </div>
 
-        <!-- Chat Interface -->
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Chat with Your Diet Assistant</h5>
-                        <div class="chat-container">
-                            <div id="chat-messages" class="chat-messages">
-                                <!-- Messages will appear here -->
-                            </div>
-                        </div>
-                        <form id="chat-form" class="input-group">
-                            <input type="text" id="user-input" class="form-control" placeholder="Type your message...">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">Send</button>
-                            </div>
-                        </form>
-                    </div>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Today's Meals</h2>
+                {% if daily_nutrients %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Dish</th>
+                                <th>Calories</th>
+                                <th>Protein</th>
+                                <th>Carbs</th>
+                                <th>Fat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for meal in daily_nutrients %}
+                            <tr>
+                                <td>{{ meal.dish_name }}</td>
+                                <td>{{ meal.calories }}</td>
+                                <td>{{ meal.protein }}</td>
+                                <td>{{ meal.carbs }}</td>
+                                <td>{{ meal.fat }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No meals logged today</p>
+                {% endif %}
+                <a href="{{ url_for('add_dish') }}" class="button">Add Meal</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Chat with Your Diet Assistant</h2>
+                <div style="margin-bottom: 20px;">
+                    <div id="chat-messages" class="chat-messages" style="height: 350px; overflow-y: auto;"></div>
                 </div>
+                <form id="chat-form" class="input-group">
+                    <input type="text" id="user-input" class="form-control" placeholder="Type your message...">
+                    <button class="button" type="submit">Send</button>
+                </form>
             </div>
         </div>
     </div>
@@ -119,11 +102,9 @@
                 const userInput = $('#user-input').val();
                 if (!userInput) return;
 
-                // Add user message to chat
                 addMessage(userInput, 'user-message');
                 $('#user-input').val('');
 
-                // Send message to backend
                 $.ajax({
                     url: '/ask',
                     method: 'POST',
@@ -132,7 +113,6 @@
                         if (response.intent) {
                             const intentInfo = `Intent: ${response.intent}\nCategory: ${response.category}`;
                             addMessage(intentInfo, 'bot-message');
-                            
                             if (response.response) {
                                 addMessage(response.response, 'bot-message');
                             }
@@ -141,15 +121,15 @@
                         }
                     },
                     error: function(xhr, status, error) {
-                        addMessage('Sorry, there was an error processing your request: ' + error, 'bot-message');
+                        addMessage('Sorry, there was an error: ' + error, 'bot-message');
                     }
                 });
             });
 
             function addMessage(text, className) {
-                const messageDiv = $('<div class="message ' + className + '"></div>')
-                    .html(text.replace(/\n/g, '<br>'));
-                $('#chat-messages').append(messageDiv);
+                const msgContainer = $('<div class="message"></div>').addClass(className);
+                msgContainer.html(text.replace(/\n/g, '<br>'));
+                $('#chat-messages').append(msgContainer);
                 $('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
             }
 

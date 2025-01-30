@@ -11,3 +11,4 @@ scikit-learn
 tqdm
 requests
 PyPDF2
+openai

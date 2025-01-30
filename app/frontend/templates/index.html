@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
@@ -28,7 +29,7 @@
                 <option value="moderate">Moderate</option>
                 <option value="active">Active</option>
             </select><br>
-            <button type="submit">Create Profile</button>
+            <button type="submit" class="button">Create Profile</button>
         </form>
     </div>
 </body>
@@ -41,6 +42,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Dish</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
@@ -48,7 +50,7 @@
         <form action="/submit_dish" method="post">
             <label>Dish Name:</label>
             <input type="text" name="dish" required><br>
-            <button type="submit">Add Dish</button>
+            <button type="submit" class="button">Add Dish</button>
         </form>
     </div>
 </body>
@@ -61,6 +63,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nutrition Comparison</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
@@ -79,7 +82,7 @@
             </tr>
             {% endfor %}
         </table>
-        <a href="/add_dish">Add another dish</a>
+        <a href="/add_dish" class="button">Add another dish</a>
     </div>
 </body>
 </html>

@@ -12,12 +12,16 @@ Module for Ms. Potts.  So far it classifies a user query into one of the four in
 	3. Personalized-Health-Advice
 """
 
+CSV_PATH = "../data/intent_embeddings/intent_embeddings_all.csv"
+
 class IntentClassifier:
     def __init__(self):
         self.model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
         
-        base_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
-        self.intent_df = pd.read_csv(os.path.join(base_path, 'intent_embeddings/intent_embeddings_all.csv'))
+        if not os.path.exists(CSV_PATH):
+            raise FileNotFoundError(f"Could not find intent embeddings file at: {CSV_PATH}")
+            
+        self.intent_df = pd.read_csv(CSV_PATH)
         
     def embed_query(self, query: str) -> np.ndarray:
         return self.model.encode([query])[0]

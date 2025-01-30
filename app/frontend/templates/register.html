@@ -4,33 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Register</h1>
-    <form action="{{ url_for('register') }}" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="age" required><br>
-        <label for="sex">Sex:</label>
-        <select id="sex" name="sex">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select><br>
-        <label for="height">Height (cm):</label>
-        <input type="number" id="height" name="height" required><br>
-        <label for="weight">Weight (kg):</label>
-        <input type="number" id="weight" name="weight" required><br>
-        <label for="activity_level">Activity Level:</label>
-        <select id="activity_level" name="activity_level">
-            <option value="Sedentary">Sedentary</option>
-            <option value="Moderately active">Moderately active</option>
-            <option value="Active">Active</option>
-        </select><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-        <button type="submit">Register</button>
-    </form>
-    <a href="{{ url_for('login') }}">Login</a>
+    <div class="container">
+        <h1>Register</h1>
+        <form action="{{ url_for('register') }}" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+            
+            <label for="sex">Sex:</label>
+            <select id="sex" name="sex">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+            
+            <label for="height">Height (cm):</label>
+            <input type="number" id="height" name="height" required>
+            
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" name="weight" required>
+            
+            <label for="activity_level">Activity Level:</label>
+            <select id="activity_level" name="activity_level">
+                <option value="Sedentary">Sedentary</option>
+                <option value="Moderately active">Moderately active</option>
+                <option value="Active">Active</option>
+            </select>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit" class="button">Register</button>
+        </form>
+        <a href="{{ url_for('login') }}" class="button">Login</a>
+    </div>
 </body>
 </html>

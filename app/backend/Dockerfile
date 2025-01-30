@@ -1,19 +1,16 @@
-ARG PYTHON_VERSION=3.12.7
-FROM python:${PYTHON_VERSION}-slim as base
+FROM python:3.12.7-slim
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    g++ \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
+# Copy requirements first for better caching
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy application code
 COPY . .
 
+# Expose port
 EXPOSE 8001
 
-CMD ["python", "main.py"]
+# Command to run Uvicorn server
+CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8001"]

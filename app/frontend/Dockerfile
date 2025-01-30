@@ -1,17 +1,19 @@
-ARG PYTHON_VERSION=3.12.7
-FROM python:${PYTHON_VERSION}-slim as base
+FROM python:3.12.7-slim
 
 WORKDIR /app
 
-# Install dependencies
+# Copy requirements first for better caching
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application
+# Copy application code
 COPY . .
 
-# Expose the frontend port
+# Expose port
 EXPOSE 8000
 
-# Use Flask development server
-CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]
+# Add health check and network configuration
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:8000/health || exit 1
+
+# Command to run Flask development server
+CMD ["flask", "--app", "app", "run", "--host=0.0.0.0", "--port=8000"]

@@ -1,44 +1,37 @@
-version: "3.9"
+version: '3.8'
 
 services:
   frontend:
-    container_name: diet-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
     ports:
       - "8000:8000"
-    env_file:
-      - ./.env
+    volumes:
+      - ./frontend:/app
+      - frontend_venv:/app/.venv
     environment:
-      - BACKEND_URL=http://backend:8001
+      - FLASK_APP=app
+      - FLASK_DEBUG=1
     depends_on:
       - backend
+    env_file:
+      - .env
 
   backend:
-    container_name: diet-backend
     build:
       context: ./backend
       dockerfile: Dockerfile
-    volumes:
-      - ./backend:/app
-      - ./data:/app/data
-      - ./potts:/app/potts
     ports:
       - "8001:8001"
-    env_file:
-      - ./.env
+    volumes:
+      - ./backend:/app
+      - backend_venv:/app/.venv
+      - ./data:/app/data
     environment:
-      - DATABASE_URL=sqlite:///app/data/dietbot.db
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      - PYTHONPATH=/app
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
 
-networks:
-  default:
-    name: diet-network
+volumes:
+  frontend_venv:
+  backend_venv:
