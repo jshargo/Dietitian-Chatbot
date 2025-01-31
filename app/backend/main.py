@@ -41,10 +41,6 @@ async def process_query(request: Request):
                             },
     '''
     
-    intent = classifier.classify(query)
-    top_intent = intent["top_intent"]
-    top_category = intent["top_category"]
-    
     if not query:
         return JSONResponse({"error": "No query provided"}, status_code=400)
     
@@ -54,7 +50,9 @@ async def process_query(request: Request):
     
     return JSONResponse({
         "reasoning": response["reasoning"],
-        "final_answer": response
+        "final_answer": response["final_answer"],
+        "detected_intent": response["detected_intent"],
+        "context_used": response.get("context_used", "")
     })
 
 

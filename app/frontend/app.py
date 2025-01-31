@@ -286,15 +286,12 @@ def ask():
             data = resp.json()
             logger.info(f"Received response from backend: {data}")
             
-            # Extract nested final answer
-            final_answer = data.get('final_answer', {})
-            if isinstance(final_answer, dict):
-                final_answer = final_answer.get('final_answer', '')
-            
+            # Fix: Properly extract context_used from response
             return jsonify({
                 "reasoning": data.get("reasoning", ""),
-                "answer": final_answer,
-                "response": final_answer
+                "answer": data.get("final_answer", ""),
+                "context_used": data.get("context_used", ""),
+                "response": data.get("final_answer", "")
             })
         else:
             error_msg = f"Backend error: {resp.status_code}"

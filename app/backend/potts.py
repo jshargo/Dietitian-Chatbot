@@ -16,16 +16,8 @@ CSV_PATH = "../data/intent_embeddings/intent_embeddings_all.csv"
 
 class IntentClassifier:
     def __init__(self):
-        self.model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-        
-        if not os.path.exists(CSV_PATH):
-            raise FileNotFoundError(f"Could not find intent embeddings file at: {CSV_PATH}")
-            
         self.intent_df = pd.read_csv(CSV_PATH)
         
-    def embed_query(self, query: str) -> np.ndarray:
-        return self.model.encode([query])[0]
-    
     def compute_similarity(self, query_embedding: np.ndarray, intent_embeddings: np.ndarray) -> List[Tuple[int, float]]:
         similarities = np.dot(intent_embeddings, query_embedding) / (
             np.linalg.norm(intent_embeddings, axis=1) * np.linalg.norm(query_embedding)
@@ -34,9 +26,7 @@ class IntentClassifier:
         top_indices = np.argsort(similarities)[::-1]
         return [(idx, similarities[idx]) for idx in top_indices[:3]]
     
-    def classify(self, query: str) -> dict:
-        query_embedding = self.embed_query(query)
-        
+    def classify_from_embedding(self, query_embedding: np.ndarray) -> dict:
         df_temp = self.intent_df.drop(['Intent', 'Category'], axis=1)
         embeddings = df_temp.to_numpy()
         

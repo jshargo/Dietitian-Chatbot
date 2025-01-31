@@ -31,6 +31,29 @@
             background-color: #f8f9fa;
             margin-right: 20%;
         }
+        .context-message {
+            background-color: #fff3e0 !important;
+            border-left: 3px solid #ff9800;
+            margin-top: 10px;
+        }
+        
+        .context-toggle {
+            background: none;
+            border: none;
+            color: #16a085;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+        
+        .context-content {
+            background: #f8f9fa;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -124,7 +147,21 @@
                         addMessage('System Reasoning: ' + data.reasoning, 'bot-message reasoning');
                     }
                     if (data.answer) {
-                        addMessage(data.answer, 'bot-message answer');
+                        const answerMessage = addMessage(data.answer, 'bot-message answer');
+                        
+                        if (data.context_used) {
+                            const contextMessage = addMessage('Context used in response:', 'bot-message context-message');
+                            
+                            const toggleButton = $('<button class="context-toggle">▼ Show Context</button>');
+                            const contextContent = $('<div class="context-content" style="display:none;"></div>').text(data.context_used);
+                            
+                            toggleButton.on('click', function() {
+                                contextContent.toggle();
+                                $(this).text(contextContent.is(':visible') ? '▲ Hide Context' : '▼ Show Context');
+                            });
+
+                            contextMessage.append(toggleButton, contextContent);
+                        }
                     }
                 } else if (data.error) {
                     addMessage('Error: ' + data.error, 'bot-message error');
@@ -137,6 +174,7 @@
                 msgContainer.text(text);
                 $('#chat-messages').append(msgContainer);
                 $('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+                return msgContainer;
             }
 
             addMessage('Hello! How can I help you today?', 'bot-message');
