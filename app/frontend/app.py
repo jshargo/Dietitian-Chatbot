@@ -240,63 +240,94 @@ def ask():
     
     logger.info(f"Received query from user {user_id}: {query}")
     
-    # Get user profile data to provide context
-    user = UserProfile.query.get(user_id)
-    today = date.today()
-    daily_nutrients = DailyNutrientIntake.query.filter_by(user_id=user_id, date=today).all()
-    
-    # Prepare payload with user context
-    payload = {
-        "user_id": user_id,
-        "query": query,
-        "context": {
-            "user_profile": {
-                "age": user.age,
-                "sex": user.sex,
-                "height": user.height,
-                "weight": user.weight,
-                "activity_level": user.activity_level
-            },
-            "daily_nutrients": [
-                {
-                    "dish_name": n.dish_name,
-                    "calories": n.calories,
-                    "protein": n.protein,
-                    "fat": n.fat, 
-                    "carbs": n.carbs,
-                    "fiber": n.fiber,
-                    "sodium": n.sodium
-                } for n in daily_nutrients
-            ]
-        }
-    }
-    
     try:
+        # Get user profile data to provide context
+        user = UserProfile.query.get(user_id)
+        today = date.today()
+        daily_nutrients = DailyNutrientIntake.query.filter_by(user_id=user_id, date=today).all()
+        
+        # Prepare payload with user context
+        payload = {
+            "user_id": user_id,
+            "query": query,
+            "context": {
+                "user_profile": {
+                    "age": user.age,
+                    "sex": user.sex,
+                    "height": user.height,
+                    "weight": user.weight,
+                    "activity_level": user.activity_level
+                },
+                "daily_nutrients": [
+                    {
+                        "dish_name": n.dish_name,
+                        "calories": n.calories,
+                        "protein": n.protein,
+                        "fat": n.fat, 
+                        "carbs": n.carbs,
+                        "fiber": n.fiber,
+                        "sodium": n.sodium
+                    } for n in daily_nutrients
+                ]
+            }
+        }
+        
         logger.info(f"Sending request to backend at {BACKEND_URL}")
         resp = requests.post(
             f"{BACKEND_URL}/api/query",
             json=payload,
-            timeout=5,
+            timeout=30,
             headers={"Content-Type": "application/json"}
         )
         
         if resp.status_code == 200:
             data = resp.json()
             logger.info(f"Received response from backend: {data}")
-            return jsonify(data)
+            
+            # Extract the relevant information from the response
+            response_text = data.get('response', {}).get('answer') or data.get('final_answer', {}).get('answer')
+            reasoning = data.get('reasoning')
+            
+            return jsonify({
+                "response": response_text,
+                "reasoning": reasoning,
+                "final_answer": response_text
+            })
         else:
             error_msg = f"Backend error: {resp.status_code}"
             logger.error(error_msg)
-            return jsonify({"error": error_msg}), 500
+            return jsonify({"error": error_msg, "response": "Sorry, I encountered an error processing your request."}), 200
             
     except requests.exceptions.ConnectionError as e:
         error_msg = f"Connection error to backend: {str(e)}"
         logger.error(error_msg)
-        return jsonify({"error": error_msg}), 500
+        return jsonify({"error": error_msg, "response": "Sorry, I'm having trouble connecting to the server."}), 200
+    except requests.Timeout:
+        error_msg = "Backend request timed out"
+        logger.error(error_msg)
+        return jsonify({"error": error_msg, "response": "Sorry, the request timed out. Please try again later."}), 200
     except Exception as e:
         error_msg = f"Unexpected error: {str(e)}"
         logger.error(error_msg)
-        return jsonify({"error": error_msg}), 500
+        return jsonify({"error": error_msg, "response": "Sorry, something went wrong."}), 200
+
+@app.route('/api/query', methods=['POST'])
+def query():
+    try:
+        data = request.get_json() if request.is_json else request.form
+        query = data.get('query')
+        
+        # Forward the request to the backend
+        response = requests.post(
+            f"{BACKEND_URL}/api/query",
+            json={'query': query},
+            timeout=30  # Increased timeout
+        )
+        
+        return jsonify(response.json())
+    except Exception as e:
+        app.logger.error(f"Error in query route: {str(e)}")
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/logout')
 def logout():

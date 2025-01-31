@@ -113,7 +113,7 @@ def embed_pdf_into_csv(
 if __name__ == "__main__":
     embed_pdf_into_csv(
         pdf_path="./nutrition_handbook.pdf",
-        embedding_model_name="dunzhang/stella_en_1.5B_v5",
+        embedding_model_name="sentence-transformers/all-MiniLM-L6-v2",
         num_sentence_chunk_size=20,
         overlap=9,
         min_token_length=30,

@@ -1,26 +1,24 @@
-import os
+import logging
 import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-import logging
+from dotenv import load_dotenv
+
+from model2 import Model
 from potts import IntentClassifier
-from agents import MealLoggingAgent, MealPlanningAgent, EducationalAgent, PersonalizedAdviceAgent
-from database import get_db_session
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-
-app = FastAPI()
-intent_classifier = IntentClassifier()
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Add CORS middleware
+load_dotenv()
+app = FastAPI()
+classifier = IntentClassifier()
+model= Model() 
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with your frontend URL
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,33 +26,34 @@ app.add_middleware(
 
 @app.post("/api/query")
 async def process_query(request: Request):
-    try:
-        data = await request.json()
-        query = data.get("query") or data.get("msg")  # Handle both frontend formats
-        
-        if not query:
-            return JSONResponse({"error": "No query provided"}, status_code=400)
-            
-        logger.info(f"Received query: {query}")
-        
-        # Get intent classification
-        result = intent_classifier.classify(query)
-        logger.info(f"Classification result: {result}")
-        
-        return JSONResponse({
-            "response": f"I understand you want help with: {result['top_intent']}",
-            "intent": result["top_intent"],
-            "category": result["top_category"],
-            "classifications": result["classifications"]
-        })
-    except Exception as e:
-        logger.error(f"Error processing query: {str(e)}", exc_info=True)
-        return JSONResponse({"error": str(e)}, status_code=500)
+
+    data = await request.json()
+    query = data.get("query") or data.get("msg")
+    
+    intent = classifier.classify(query)
+    top_intent = intent["top_intent"]
+    top_category = intent["top_category"]
+    
+    if not query:
+        return JSONResponse({"error": "No query provided"}, status_code=400)
+    
+    logger.info(f"Received query: {query}")
+    
+    response = model.get_response(query)
+    
+    return JSONResponse({
+        "response": response,
+        "classification": intent,
+        "reasoning": f"Intent classified as {top_intent} ({top_category})",
+        "final_answer": response
+    })
+
 
 @app.get("/health")
 async def health_check():
+    """Simple endpoint to confirm the app is running."""
     return {"status": "healthy"}
 
-
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8001)
+    # Run the FastAPI server
+    uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)

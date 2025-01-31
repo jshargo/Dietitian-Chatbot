@@ -30,9 +30,13 @@ def retrieve_knowledge(query: str, top_k=3):
     query_emb = embedder.encode([query])[0]
     knowledge_vectors = df_knowledge[[c for c in df_knowledge.columns if c.startswith("f")]].values
 
-    norms = np.linalg.norm(knowledge_vectors, axis=1) * np.linalg.norm(query_emb)
-    sim = np.dot(knowledge_vectors, query_emb) / norms
-    df_knowledge["similarity"] = sim
+    # Compute cosine similarity using same method as IntentClassifier
+    dot_product = np.dot(knowledge_vectors, query_emb)
+    knowledge_norms = np.linalg.norm(knowledge_vectors, axis=1)
+    query_norm = np.linalg.norm(query_emb)
+    similarity_scores = dot_product / (knowledge_norms * query_norm)
+
+    df_knowledge["similarity"] = similarity_scores
 
     df_sorted = df_knowledge.sort_values(by="similarity", ascending=False)
     top_rows = df_sorted.head(top_k)

@@ -110,25 +110,35 @@
                     method: 'POST',
                     data: { query: userInput },
                     success: function(response) {
-                        if (response.intent) {
-                            const intentInfo = `Intent: ${response.intent}\nCategory: ${response.category}`;
-                            addMessage(intentInfo, 'bot-message');
-                            if (response.response) {
-                                addMessage(response.response, 'bot-message');
-                            }
+                        // Extract the text content from the response
+                        var reasoning = typeof response.reasoning === 'object' ? 
+                            JSON.stringify(response.reasoning) : response.reasoning;
+                        
+                        var answer = typeof response.final_answer === 'string' ? 
+                            response.final_answer : 
+                            typeof response.response === 'string' ? 
+                                response.response : 
+                                JSON.stringify(response.final_answer || response.response);
+
+                        if (reasoning) {
+                            addMessage('Intent: ' + reasoning, 'bot-message reasoning');
+                        }
+                        
+                        if (answer) {
+                            addMessage(answer, 'bot-message answer');
                         } else if (response.error) {
-                            addMessage('Error: ' + response.error, 'bot-message');
+                            addMessage('Error: ' + response.error, 'bot-message error');
                         }
                     },
                     error: function(xhr, status, error) {
-                        addMessage('Sorry, there was an error: ' + error, 'bot-message');
+                        addMessage('Error connecting to the server: ' + error, 'bot-message error');
                     }
                 });
             });
 
             function addMessage(text, className) {
                 const msgContainer = $('<div class="message"></div>').addClass(className);
-                msgContainer.html(text.replace(/\n/g, '<br>'));
+                msgContainer.text(text);
                 $('#chat-messages').append(msgContainer);
                 $('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
             }
