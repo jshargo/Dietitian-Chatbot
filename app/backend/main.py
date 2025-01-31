@@ -24,11 +24,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/api/query")
+@app.post("/query")
 async def process_query(request: Request):
 
     data = await request.json()
     query = data.get("query") or data.get("msg")
+    '''
+    Can also recieve:   "user_id": user_id,
+                        "context": {
+                            "user_profile": {
+                                "age": user.age,
+                                "sex": user.sex,
+                                "height": user.height,
+                                "weight": user.weight,
+                                "activity_level": user.activity_level
+                            },
+    '''
     
     intent = classifier.classify(query)
     top_intent = intent["top_intent"]
@@ -42,9 +53,7 @@ async def process_query(request: Request):
     response = model.get_response(query)
     
     return JSONResponse({
-        "response": response,
-        "classification": intent,
-        "reasoning": f"Intent classified as {top_intent} ({top_category})",
+        "reasoning": response["reasoning"],
         "final_answer": response
     })
 

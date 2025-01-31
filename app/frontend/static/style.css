@@ -293,3 +293,48 @@ table th, table td {
     background-color: #f1f1f1;
     color: var(--text-color);
 }
+
+/* Add these styles to differentiate message types */
+.reasoning {
+    background-color: #e3f2fd !important;
+    color: #1976d2 !important;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.answer {
+    background-color: #f1f8e9 !important;
+    color: #2e7d32 !important;
+    margin-bottom: 15px;
+}
+
+.error {
+    background-color: #ffebee !important;
+    color: #c62828 !important;
+}
+
+/* Add to existing CSS */
+.reasoning {
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+}
+
+.answer {
+    white-space: pre-line;
+    line-height: 1.6;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+/* Format JSON-like responses */
+.message[style*="monospace"] {
+    font-family: Monaco, Consolas, "Courier New", monospace;
+    font-size: 0.9em;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}

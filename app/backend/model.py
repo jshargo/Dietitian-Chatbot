@@ -1,4 +1,4 @@
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any
 import numpy as np
 import json
 import os
@@ -6,8 +6,9 @@ import logging
 from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel, Field
+from potts import IntentClassifier
 from sentence_transformers import SentenceTransformer
-import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -20,7 +21,7 @@ load_dotenv()
 DEFAULT_MODEL = "gpt-4o-mini"
 AGENT_LOOP_LIMIT = 3
 
-class RAGEngine:
+class Model:
     """
     Retrieval-Augmented Generation (RAG) engine that combines OpenAI's language models
     with a local knowledge base for context-aware responses.
@@ -32,16 +33,29 @@ class RAGEngine:
             self.client = OpenAI(
                 api_key=os.getenv('OPENAI_API_KEY')
             )
+            # Initialize intent classifier
+            self.intent_classifier = IntentClassifier()
+            # Initialize embedding model (same as potts.py)
+            self.embedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
         except Exception as e:
-            logger.error(f"Failed to initialize OpenAI client: {e}")
+            logger.error(f"Failed to initialize components: {e}")
             raise
         
         # Configuration
         self.model = os.getenv('OPENAI_MODEL', DEFAULT_MODEL)
         self.agent_loop_limit = AGENT_LOOP_LIMIT
         
-        # Replace sample data with CSV embeddings
-        self.data, self.embeddings = self._load_embeddings("../data/embeddings.csv")
+        # Sample data - in production this would come from a database
+        self.data = [
+            "Python is a versatile programming language used for web development, data analysis, and more.",
+            "OpenAI provides advanced AI models like GPT-4 that support function calling.",
+            "Function calling allows external tools to be integrated seamlessly into chatbots.",
+            "Machine learning is a subset of artificial intelligence that focuses on building algorithms.",
+            "The Turing test is a benchmark for evaluating an AI's ability to mimic human intelligence.",
+            "Transformers are a type of neural network architecture that powers modern AI systems.",
+            "Kotlin is a modern programming language, widely used for Android app development.",
+            "Docker and Kubernetes are essential tools for containerized application deployment.",
+        ]
         
         # Tool definitions
         self.tools = [
@@ -82,80 +96,63 @@ class RAGEngine:
             }
         }
         
-        # Initialize local embedding model (same as potts.py)
-        self.embedder = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-        
         # Initial system message
         self.messages = [
            {
                 "role": "system",
                 "content": (
-                    "You are an AI assistant that first analyzes the user's intent category, then provides "
-                    "expert answers using relevant context. Follow these steps:\n"
-                    "1. Identify which intent category the question belongs to\n"
-                    "2. Retrieve relevant information using the tool\n"
-                    "3. Synthesize a clear answer using the retrieved context\n"
-                    "4. If unsure, ask clarifying questions"
+                    "You are an AI assistant whose primary goal is to answer user questions effectively. "
+                    "When a user's question lacks sufficient information, use the `retrieve_context` tool to find relevant information. "
+                    "If retrieving additional context doesn't help, ask the user to clarify their question for more details. "
+                    "Avoid excessive looping to find answers if the information is unavailable; instead, be transparent and admit if you don't know."
                 )
             }
         ]
 
-    def _load_embeddings(self, csv_path: str) -> Tuple[List[str], List[np.ndarray]]:
-        """Load precomputed embeddings from CSV"""
-        if not os.path.exists(csv_path):
-            raise FileNotFoundError(f"Embeddings file not found: {csv_path}")
-        
-        df = pd.read_csv(csv_path)
-        
-        # Convert string embeddings to numpy arrays
-        df['embedding'] = df['embedding'].apply(
-            lambda x: np.array(eval(x)) if isinstance(x, str) else x
-        )
-        
-        return df['sentence_chunk'].tolist(), df['embedding'].tolist()
-
     def retrieve_context(self, query: str) -> str:
         """
-        Retrieve the most relevant context for the given query using embedding similarity.
-        
-        Args:
-            query (str): The user's query to find relevant context for
-            
-        Returns:
-            str: The most relevant context from the knowledge base
+        Retrieve the most relevant context using the same embeddings as potts.py
         """
         try:
-            # Encode query using local model
-            query_embedding = self.embedder.encode([query])[0]
+            # Encode both data and query using the shared embedding model
+            data_embeddings = self.embedding_model.encode(self.data)
+            query_embedding = self.embedding_model.encode([query])
             
-            # Calculate similarities with precomputed embeddings
-            similarities = [
-                cosine_similarity(query_embedding, emb)
-                for emb in self.embeddings
-            ]
+            # Calculate cosine similarity using sklearn
+            similarities = cosine_similarity(query_embedding, data_embeddings)[0]
             
+            # Get most relevant context
             most_relevant_idx = np.argmax(similarities)
             return self.data[most_relevant_idx]
         except Exception as e:
             logger.error(f"Error retrieving context: {e}")
             raise
 
-    def get_response(self, query: str, intent_classification: str) -> Dict[str, Any]:
-        """
-        Modified to include intent classification in the reasoning process
-        """
-        # Add intent context to the message history
-        self.messages.append({
+    def get_response(self, query: str) -> Dict[str, Any]:
+        # Classify user intent first
+        intent_result = self.intent_classifier.classify(query)
+        top_intent = intent_result['top_intent']
+        
+        # Update system message with intent classification
+        updated_system_message = {
             "role": "system",
-            "content": f"Current intent classification: {intent_classification}"
-        })
-        self.messages.append({"role": "user", "content": query})
+            "content": (
+                f"The user's intent is classified as {top_intent}. " +
+                "Your primary goal is to answer questions effectively using this context. " +
+                "When needed, use tools to retrieve additional information. " +
+                "Always explain your reasoning including the intent classification."
+            )
+        }
+        
+        # Create fresh message chain with intent context
+        intent_aware_messages = [updated_system_message, {"role": "user", "content": query}]
+        
         try:
             intermediate_steps = []
-            # Initial function call to retrieve context
+            # Use intent-aware messages instead of stored messages
             initial_response = self.client.chat.completions.create(
                 model=self.model,
-                messages=self.messages,
+                messages=intent_aware_messages,
                 tools=self.tools,
                 response_format=self.context_reasoning
             )
@@ -187,7 +184,7 @@ class RAGEngine:
                     })
                 
                 # Update messages with context and reasoning instruction
-                self.messages.extend([
+                intent_aware_messages.extend([
                     loop_response.choices[0].message,
                     *tool_call_results_message
                 ])
@@ -195,7 +192,7 @@ class RAGEngine:
                 # Final call for tool response and reasoning
                 loop_response = self.client.chat.completions.create(
                     model=self.model,
-                    messages=self.messages,
+                    messages=intent_aware_messages,
                     tools=self.tools,
                     response_format=self.context_reasoning
                 )
@@ -203,11 +200,14 @@ class RAGEngine:
             
             final_response = json.loads(loop_response.choices[0].message.content) if loop_response.choices[0].message.content is not None else {"reasoning": "Stuck in loop", "final_answer": "Error: Stuck in loop"}
             # Append assistant response
-            self.messages.append({"role": "assistant", "content": final_response["final_answer"]})
+            intent_aware_messages.append({"role": "assistant", "content": final_response["final_answer"]})
+            
+            # Update final response with intent information
             return {
-                "intermediate_steps": intermediate_steps if intermediate_steps else [],
-                "reasoning": final_response["reasoning"],
-                "final_answer": final_response["final_answer"]
+                "intermediate_steps": intermediate_steps,
+                "reasoning": f"Identified intent: {top_intent}. " + final_response["reasoning"],
+                "final_answer": final_response["final_answer"],
+                "detected_intent": top_intent
             }
             
         except Exception as e:
@@ -218,10 +218,11 @@ class RAGEngine:
                     "output": str(e)
                 }],
                 "reasoning": f"Error occurred: {str(e)}",
-                "final_answer": f"Error: {str(e)}"
+                "final_answer": f"Error: {str(e)}",
+                "detected_intent": top_intent
             }
 
 if __name__ == "__main__":
-    engine = RAGEngine()
-    response = engine.get_response("What is machine learning?", "Information Retrieval")
+    engine = Model()
+    response = engine.get_response("What is machine learning?")
     print(json.dumps(response, indent=2))

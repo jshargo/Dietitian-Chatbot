@@ -152,6 +152,9 @@ def dashboard():
 def add_dish():
     return render_template('add_dish.html')
 
+'''
+To be implemented
+'''
 @app.route('/submit_dish', methods=['POST'])
 def submit_dish():
     if 'user_id' not in session:
@@ -205,6 +208,9 @@ def submit_dish():
 
     return redirect(url_for('dashboard'))
 
+'''
+To be implemented
+'''
 @app.route('/show_comparison')
 def show_comparison():
     user_id = session.get('user_id')
@@ -224,10 +230,6 @@ def show_comparison():
     }
 
     return render_template('show_comparison.html', daily_nutrients=daily_nutrients, comparison=comparison)
-
-@app.route("/chatbot")
-def chatbot():
-    return render_template('chat.html')  
 
 @app.route("/ask", methods=["POST"])
 def ask():
@@ -274,9 +276,9 @@ def ask():
         
         logger.info(f"Sending request to backend at {BACKEND_URL}")
         resp = requests.post(
-            f"{BACKEND_URL}/api/query",
+            f"{BACKEND_URL}/query",
             json=payload,
-            timeout=30,
+            timeout=15,
             headers={"Content-Type": "application/json"}
         )
         
@@ -284,14 +286,15 @@ def ask():
             data = resp.json()
             logger.info(f"Received response from backend: {data}")
             
-            # Extract the relevant information from the response
-            response_text = data.get('response', {}).get('answer') or data.get('final_answer', {}).get('answer')
-            reasoning = data.get('reasoning')
+            # Extract nested final answer
+            final_answer = data.get('final_answer', {})
+            if isinstance(final_answer, dict):
+                final_answer = final_answer.get('final_answer', '')
             
             return jsonify({
-                "response": response_text,
-                "reasoning": reasoning,
-                "final_answer": response_text
+                "reasoning": data.get("reasoning", ""),
+                "answer": final_answer,
+                "response": final_answer
             })
         else:
             error_msg = f"Backend error: {resp.status_code}"
@@ -311,7 +314,7 @@ def ask():
         logger.error(error_msg)
         return jsonify({"error": error_msg, "response": "Sorry, something went wrong."}), 200
 
-@app.route('/api/query', methods=['POST'])
+@app.route('/query', methods=['POST'])
 def query():
     try:
         data = request.get_json() if request.is_json else request.form
@@ -319,9 +322,9 @@ def query():
         
         # Forward the request to the backend
         response = requests.post(
-            f"{BACKEND_URL}/api/query",
+            f"{BACKEND_URL}/query",
             json={'query': query},
-            timeout=30  # Increased timeout
+            timeout=15  # Increased timeout
         )
         
         return jsonify(response.json())
