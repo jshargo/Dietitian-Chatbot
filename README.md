@@ -9,7 +9,7 @@ This project, which is in progress, aims to create an emotionally conscious diet
 Create a virtual environment and install the dependencies: (To be dockerized soon...)
 
 ```bash
-cd app/backend
+cd backend
 python -m venv .venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -21,13 +21,13 @@ uvicorn main:app --reload --port 8001
 
 Then run the frontend:
 ```bash
-cd app/frontend
+cd frontend
 python -m venv .venv
 source venv/bin/activate
 pip install -r requirements.txt
-flask --app app run 
+flask run --debug 
 ```
-Hosted on localhost
+Hosted on localhost:5000
 
 To index your PDF documents:
 
