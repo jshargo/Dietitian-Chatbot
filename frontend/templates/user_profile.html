@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Create Your Profile</h1>
+        <form action="{{ url_for('create_profile') }}" method="post">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="age">Age:</label><br>
+            <input type="number" id="age" name="age" required><br><br>
+
+            <label for="sex">Sex:</label><br>
+            <select id="sex" name="sex" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select><br><br>
+
+            <label for="height">Height (cm):</label><br>
+            <input type="number" id="height" name="height" required><br><br>
+
+            <label for="weight">Weight (kg):</label><br>
+            <input type="number" id="weight" name="weight" required><br><br>
+
+            <label for="activity_level">Activity Level:</label><br>
+            <select id="activity_level" name="activity_level" required>
+                <option value="Sedentary">Sedentary</option>
+                <option value="Moderately active">Moderately active</option>
+                <option value="Active">Active</option>
+            </select><br><br>
+
+            <button type="submit" class="button">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Dish</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Dish</h1>
+        <form method="POST" action="{{ url_for('submit_dish') }}">
+            <input type="text" name="dish_name" placeholder="Dish Name" required>
+            <button type="submit" class="button">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+python-dotenv
+sqlalchemy
+pydantic
+sentence-transformers
+transformers
+torch
+pandas
+scikit-learn
+tqdm
+requests
+PyPDF2
+openai

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Create Your Profile</h2>
+        <form action="/create_profile" method="post">
+            <label>Name:</label>
+            <input type="text" name="name" required><br>
+            <label>Age:</label>
+            <input type="number" name="age" required><br>
+            <label>Sex:</label>
+            <select name="sex">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select><br>
+            <label>Height (cm):</label>
+            <input type="number" name="height" required><br>
+            <label>Weight (kg):</label>
+            <input type="number" name="weight" required><br>
+            <label>Activity Level:</label>
+            <select name="activity_level">
+                <option value="sedentary">Sedentary</option>
+                <option value="moderate">Moderate</option>
+                <option value="active">Active</option>
+            </select><br>
+            <button type="submit" class="button">Create Profile</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Dish</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Add Dish</h2>
+        <form action="/submit_dish" method="post">
+            <label>Dish Name:</label>
+            <input type="text" name="dish" required><br>
+            <button type="submit" class="button">Add Dish</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Comparison</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Nutrition Comparison</h2>
+        <table>
+            <tr>
+                <th>Nutrient</th>
+                <th>Intake</th>
+                <th>Recommended</th>
+            </tr>
+            {% for nutrient, values in comparison.items() %}
+            <tr>
+                <td>{{ nutrient }}</td>
+                <td>{{ values[0] }}</td>
+                <td>{{ values[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="/add_dish" class="button">Add another dish</a>
+    </div>
+</body>
+</html>
+
+
