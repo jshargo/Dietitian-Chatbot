@@ -119,6 +119,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            const loadingHTML = `
+                <div class="loading-container">
+                    <div class="loading-text">Thinking</div>
+                    <div class="loading-dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            `;
+
             $('#chat-form').on('submit', function(e) {
                 e.preventDefault();
                 
@@ -128,14 +139,24 @@
                 addMessage(userInput, 'user-message');
                 $('#user-input').val('');
 
+                // Add and show loading animation
+                const $loading = $(loadingHTML);
+                $('#chat-messages').append($loading);
+                setTimeout(() => $loading.addClass('visible'), 10);
+                scrollToBottom();
+
                 $.ajax({
                     url: '/ask',
                     method: 'POST',
                     data: { query: userInput },
                     success: function(response) {
+                        // Remove loading animation
+                        $loading.remove();
                         handleBotResponse(response);
                     },
                     error: function(xhr, status, error) {
+                        // Remove loading animation
+                        $loading.remove();
                         addMessage('Error connecting to the server: ' + error, 'bot-message error');
                     }
                 });
@@ -175,6 +196,11 @@
                 $('#chat-messages').append(msgContainer);
                 $('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
                 return msgContainer;
+            }
+
+            function scrollToBottom() {
+                const chatMessages = $('#chat-messages');
+                chatMessages.scrollTop(chatMessages[0].scrollHeight);
             }
 
             addMessage('Hello! How can I help you today?', 'bot-message');

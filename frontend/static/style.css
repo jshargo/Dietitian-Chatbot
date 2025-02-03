@@ -338,3 +338,73 @@ table th, table td {
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
 }
+
+/* Loading Animation */
+.loading-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    background: rgba(46, 204, 113, 0.1);
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.loading-container.visible {
+    opacity: 1;
+}
+
+.loading-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: var(--emerald-green);
+    border-radius: 50%;
+    animation: bounce 1.5s infinite;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-8px);
+    }
+}
+
+.loading-text {
+    color: var(--emerald-green);
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+/* Pulse animation for the container */
+.loading-container {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+    }
+}
