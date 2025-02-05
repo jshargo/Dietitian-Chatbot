@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from typing import Tuple
+from typing import List, Tuple
 
 """ 12/15/2024: nt
 Module for Ms. Potts.  So far it classifies a user query into one of the four intents:
