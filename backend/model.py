@@ -1,8 +1,8 @@
-from typing import Dict, Any
 import numpy as np
 import json
 import os
 import logging
+import requests
 from dotenv import load_dotenv
 from openai import OpenAI
 from embeddings import cosine_similarity, embed_texts
@@ -127,15 +127,81 @@ class Model:
             logger.error(f"Retrieval error: {str(e)}")
             return "Error accessing knowledge base"
 
-    def get_response(self, query: str) -> Dict[str, Any]:
-        # Embed the query once and use for both intent and context
-        query_embedding = self.embed_query(query)
+    def handle_meal_logging(self, query: str) -> dict:
+        # Use the entire query as the dish name for simplicity
+        dish_name = query.strip()
         
-        # Get intent classification using the embedding
+        # Prepare the Nutritionix API request
+        nutritionix_app_id = os.getenv("NUTRITIONIX_APP_ID")
+        nutritionix_api_key = os.getenv("NUTRITIONIX_API_KEY")
+        payload = {"query": dish_name}
+        headers = {
+            "x-app-id": nutritionix_app_id,
+            "x-app-key": nutritionix_api_key,
+            "Content-Type": "application/json"
+        }
+        
+        response = requests.post(
+            "https://trackapi.nutritionix.com/v2/natural/nutrients",
+            headers=headers,
+            json=payload
+        )
+    
+        nutrition_data = response.json()
+        if "foods" not in nutrition_data or len(nutrition_data["foods"]) == 0:
+            return {
+                "reasoning": "Meal logging identified. No nutritional data available.",
+                "final_answer": "Couldn't retrieve nutritional information for that meal.",
+                "detected_intent": "Meal-logging",
+                "context_used": dish_name
+            }
+        
+        food = nutrition_data["foods"][0]
+        
+        def safe_float(value):
+            try:
+                return float(value)
+            except (ValueError, TypeError):
+                return 0.0
+        
+        calories = safe_float(food.get("nf_calories", 0))
+        protein  = safe_float(food.get("nf_protein", 0))
+        fat      = safe_float(food.get("nf_total_fat", 0))
+        carbs    = safe_float(food.get("nf_total_carbohydrate", 0))
+        fiber    = safe_float(food.get("nf_dietary_fiber", 0))
+        sodium   = safe_float(food.get("nf_sodium", 0))
+        
+        
+        macros_summary = (
+            f"Meal: {dish_name}\n"
+            f"Calories: {calories} kcal\n"
+            f"Protein: {protein} g\n"
+            f"Fat: {fat} g\n"
+            f"Carbohydrates: {carbs} g\n"
+            f"Fiber: {fiber} g\n"
+            f"Sodium: {sodium} mg\n"
+        )
+        
+        confirmation_message = (
+            f"Your meal has been logged successfully.\n{macros_summary}"
+        )
+        
+        return {
+            "reasoning": f"Meal logging identified. Processed dish: {dish_name}",
+            "final_answer": confirmation_message,
+            "detected_intent": "Meal-logging",
+            "context_used": dish_name
+        }
+        
+    def get_response(self, query: str) -> dict:
+        query_embedding = self.embed_query(query)
         intent_result = self.intent_classifier.classify_from_embedding(query_embedding)
         top_intent = intent_result['top_intent']
-
-        # Always process through RAG first
+        
+        # Intercept meal logging requests
+        if top_intent.lower() == "meal-logging":
+            return self.handle_meal_logging(query)
+        
         initial_context = self.retrieve_context(query)
         if "OUT_OF_SCOPE" in initial_context:
             return {
@@ -144,23 +210,20 @@ class Model:
                 "detected_intent": top_intent,
                 "context_used": initial_context
             }
-
-        # Update system message with intent classification
+        
         updated_system_message = {
             "role": "system",
             "content": (
-                f"User's intent is {top_intent}. " +
-                "You are a nutrition expert. " +
-                "If asked about non-nutrition topics, respond that it's out of scope. " +
+                f"User's intent is {top_intent}. "
+                "You are a nutrition expert. "
+                "If asked about non-nutrition topics, respond that it's out of scope. "
                 "Always use retrieve_context tool before answering."
-                f"If the user's intent is classified as {top_intent}. " +
-                "Your primary goal is to answer questions effectively using this context. " +
-                "When needed, use tools to retrieve additional information. " +
-                "Always explain your reasoning including the intent classification."
+                f" If the user's intent is classified as {top_intent}, "
+                "your primary goal is to answer questions effectively using the provided context. "
+                "When needed, use tools to retrieve additional information and explain your reasoning."
             )
         }
         
-        # Create fresh message chain with intent context
         intent_aware_messages = [updated_system_message, {"role": "user", "content": query}]
         
         try:
@@ -195,13 +258,11 @@ class Model:
                 if final_answer:
                     break
 
-                # Update messages with context and reasoning instruction
                 intent_aware_messages.extend([
                     loop_response.choices[0].message,
                     *tool_call_results_message
                 ])
 
-                # Final call for tool response and reasoning
                 loop_response = self.client.chat.completions.create(
                     model=self.model,
                     messages=intent_aware_messages,
@@ -210,7 +271,6 @@ class Model:
                 )
                 count += 1
             
-            # Handle final response construction
             if final_answer:
                 response_content = {
                     "reasoning": f"Identified intent: {top_intent}. Question out of scope",

@@ -78,6 +78,13 @@
             </tbody>
         </table>
 
+        <h2>Allergy Considerations</h2>
+        {% if user.allergies %}
+        <p>Your reported allergies: <strong>{{ user.allergies }}</strong></p>
+        {% else %}
+        <p>No allergies reported in your profile</p>
+        {% endif %}
+
         <a href="{{ url_for('dashboard') }}" class="button">Back to Dashboard</a>
     </div>
 </body>
