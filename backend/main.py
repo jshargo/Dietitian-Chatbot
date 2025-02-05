@@ -1,5 +1,6 @@
 import logging
 import uvicorn
+import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -7,6 +8,8 @@ from dotenv import load_dotenv
 
 from model import Model
 from potts import IntentClassifier
+
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

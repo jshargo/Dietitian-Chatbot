@@ -1,7 +1,6 @@
 import sys
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from datetime import date
 import requests
 import logging
@@ -24,13 +23,12 @@ BACKEND_URL = "http://localhost:8000"
 logger.info("Flask app is starting...")
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///dietbot.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dietbot.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'your_secret_key'
 app.app_context().push()
 
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 # Define the database models
 class UserProfile(db.Model):
@@ -41,6 +39,7 @@ class UserProfile(db.Model):
     sex = db.Column(db.String(10), nullable=False)
     height = db.Column(db.Integer, nullable=False)
     weight = db.Column(db.Integer, nullable=False)
+    allergies = db.Column(db.String(100), nullable=True)
     activity_level = db.Column(db.String(50), nullable=False)
     daily_nutrient_intake = db.relationship('DailyNutrientIntake', backref='user', lazy=True)
 
@@ -131,8 +130,9 @@ def create_profile():
     height = request.form['height']
     weight = request.form['weight']
     activity_level = request.form['activity_level']
+    allergies = request.form['allergies']
 
-    user = UserProfile(name=name, password=password, age=age, sex=sex, height=height, weight=weight, activity_level=activity_level)
+    user = UserProfile(name=name, password=password, age=age, sex=sex, height=height, weight=weight, activity_level=activity_level, allergies=allergies)
     db.session.add(user)
     db.session.commit()
 
@@ -142,11 +142,11 @@ def create_profile():
 @app.route('/dashboard')
 def dashboard():
     user_id = session.get('user_id')
-    user = UserProfile.query.get(user_id)
+    user = db.session.get(UserProfile, user_id)
     today = date.today()
 
     daily_nutrients = DailyNutrientIntake.query.filter_by(user_id=user_id, date=today).all()
-    return render_template('dashboard.html', user=user, daily_nutrients=daily_nutrients)
+    return render_template('chat.html', user=user, daily_nutrients=daily_nutrients)
 
 @app.route('/add_dish')
 def add_dish():
@@ -163,49 +163,77 @@ def submit_dish():
     user_id = session['user_id']
     dish_name = request.form['dish_name']
 
-    # Call the API to get the nutritional info
-    response = requests.get(
-        f'https://api.api-ninjas.com/v1/nutrition?query={dish_name}',
-        headers={'X-Api-Key': 'iVUT3BZ+/515ojicGBCKcQ==gMVpcwVlveV3Jvp1'}
-    )
+    # Retrieve Nutritionix credentials from environment variables
+    nutritionix_app_id = os.getenv("NUTRITIONIX_APP_ID")
+    nutritionix_api_key = os.getenv("NUTRITIONIX_API_KEY")
+
+    # Prepare the payload and headers for the Nutritionix Natural Language API call
+    payload = {"query": dish_name}
+    headers = {
+        "x-app-id": nutritionix_app_id,
+        "x-app-key": nutritionix_api_key,
+        "Content-Type": "application/json"
+    }
+
+    try:
+        # Make a POST request to the Nutritionix endpoint
+        response = requests.post(
+            "https://trackapi.nutritionix.com/v2/natural/nutrients",
+            headers=headers,
+            json=payload
+        )
+    except requests.RequestException as e:
+        flash("Error connecting to Nutritionix API.", "danger")
+        app.logger.error(f"Nutritionix API request error: {e}")
+        return redirect(url_for('dashboard'))
+
+    if response.status_code != 200:
+        flash("Error retrieving nutritional information.", "danger")
+        app.logger.error(f"Nutritionix API error: {response.status_code} - {response.text}")
+        return redirect(url_for('dashboard'))
+
     nutrition_data = response.json()
 
-    if nutrition_data:
-        # Extract the nutrient data, default to 0 if the value is non-numeric
-        data = nutrition_data[0]
+    # Ensure that the response contains nutritional data
+    if "foods" not in nutrition_data or len(nutrition_data["foods"]) == 0:
+        flash("No nutritional information found.", "danger")
+        return redirect(url_for('dashboard'))
 
-        def safe_float(value):
-            try: 
-                return float(value)
-            except (ValueError, TypeError):
-                return 0.0
+    # Extract data from the first food item returned
+    food = nutrition_data["foods"][0]
 
-        calories = safe_float(data.get('calories', 0))
-        protein = safe_float(data.get('protein_g', 0))
-        fat = safe_float(data.get('fat_total_g', 0))
-        carbs = safe_float(data.get('carbohydrates_total_g', 0))
-        fiber = safe_float(data.get('fiber_g', 0))
-        sodium = safe_float(data.get('sodium_mg', 0))
+    def safe_float(value):
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return 0.0
 
-        # Create a new DailyNutrientIntake record
-        new_intake = DailyNutrientIntake(
-            user_id=user_id,
-            date=date.today(),
-            dish_name=dish_name,
-            calories=calories,
-            protein=protein,
-            fat=fat,
-            carbs=carbs,
-            fiber=fiber,
-            sodium=sodium
-        )
-        db.session.add(new_intake)
-        db.session.commit()
+    calories = safe_float(food.get("nf_calories", 0))
+    protein  = safe_float(food.get("nf_protein", 0))
+    fat      = safe_float(food.get("nf_total_fat", 0))
+    carbs    = safe_float(food.get("nf_total_carbohydrate", 0))
+    fiber    = safe_float(food.get("nf_dietary_fiber", 0))
+    sodium   = safe_float(food.get("nf_sodium", 0))
 
-        flash('Dish added successfully!', 'success')
-    else:
-        flash('Failed to retrieve nutritional information.', 'danger')
+    
+    
 
+    # Create a new DailyNutrientIntake record using the extracted values
+    new_intake = DailyNutrientIntake(
+        user_id=user_id,
+        date=date.today(),
+        dish_name=dish_name,
+        calories=calories,
+        protein=protein,
+        fat=fat,
+        carbs=carbs,
+        fiber=fiber,
+        sodium=sodium
+    )
+    db.session.add(new_intake)
+    db.session.commit()
+
+    flash('Dish added successfully!', 'success')
     return redirect(url_for('dashboard'))
 
 '''
@@ -214,7 +242,7 @@ To be implemented
 @app.route('/show_comparison')
 def show_comparison():
     user_id = session.get('user_id')
-    user = UserProfile.query.get(user_id)
+    user = db.session.get(UserProfile, user_id)
     today = date.today()
 
     daily_nutrients = DailyNutrientIntake.query.filter_by(user_id=user_id, date=today).all()
@@ -229,7 +257,10 @@ def show_comparison():
         'Sodium (mg)': (sum(dish.sodium for dish in daily_nutrients), rdi.get('sodium', 0))
     }
 
-    return render_template('show_comparison.html', daily_nutrients=daily_nutrients, comparison=comparison)
+    return render_template('show_comparison.html', 
+                         user=user,
+                         daily_nutrients=daily_nutrients, 
+                         comparison=comparison)
 
 @app.route("/ask", methods=["POST"])
 def ask():
@@ -244,7 +275,7 @@ def ask():
     
     try:
         # Get user profile data to provide context
-        user = UserProfile.query.get(user_id)
+        user = db.session.get(UserProfile, user_id)
         today = date.today()
         daily_nutrients = DailyNutrientIntake.query.filter_by(user_id=user_id, date=today).all()
         
@@ -311,29 +342,33 @@ def ask():
         logger.error(error_msg)
         return jsonify({"error": error_msg, "response": "Sorry, something went wrong."}), 200
 
-@app.route('/query', methods=['POST'])
-def query():
-    try:
-        data = request.get_json() if request.is_json else request.form
-        query = data.get('query')
-        
-        # Forward the request to the backend
-        response = requests.post(
-            f"{BACKEND_URL}/query",
-            json={'query': query},
-            timeout=15  # Increased timeout
-        )
-        
-        return jsonify(response.json())
-    except Exception as e:
-        app.logger.error(f"Error in query route: {str(e)}")
-        return jsonify({'error': str(e)}), 500
+
 
 @app.route('/logout')
 def logout():
     return redirect(url_for('index'))
 
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    user = db.session.get(UserProfile, session['user_id'])
+    
+    if request.method == 'POST':
+        # Update user profile
+        user.height = request.form['height']
+        user.weight = request.form['weight']
+        user.activity_level = request.form['activity_level']
+        user.allergies = request.form['allergies']
+        db.session.commit()
+        flash('Profile updated successfully!', 'success')
+        return redirect(url_for('dashboard'))
+    
+    return render_template('profile.html', user=user)
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True, host='localhost', port=8000)
+        app.run(debug=True, host='localhost', port=8001, use_reloader=True)
