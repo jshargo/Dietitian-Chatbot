@@ -2,75 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Your Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - DietBot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="dashboard">
-        <header class="dashboard-header">
-            <h1>Your Profile</h1>
-            <a href="{{ url_for('dashboard') }}" class="btn">Back to Dashboard</a>
-        </header>
-
-        <section class="stats-section">
-            <div class="card">
-                <div class="card-body">
-                    <h2>Edit Profile</h2>
-                    <form method="POST" action="{{ url_for('profile') }}">
-                        <div class="form-group">
-                            <label>Name:</label>
-                            <input type="text" value="{{ user.name }}" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label>Age:</label>
-                            <input type="number" value="{{ user.age }}" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label>Sex:</label>
-                            <input type="text" value="{{ user.sex }}" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label>Height (in):</label>
-                            <input type="number" name="height" value="{{ user.height }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Weight (lbs):</label>
-                            <input type="number" name="weight" value="{{ user.weight }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Activity Level:</label>
-                            <select name="activity_level" required>
-                                {% for level in ['Sedentary', 'Moderately active', 'Active'] %}
-                                <option value="{{ level }}" {% if user.activity_level == level %}selected{% endif %}>{{ level }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Allergies:</label>
-                            <input type="text" name="allergies" value="{{ user.allergies|join(', ') }}">
-                        </div>
-                        <div class="form-group">
-                            <label>Likes:</label>
-                            <input type="text" name="likes" value="{{ user.likes|join(', ') }}">
-                        </div>
-                        <div class="form-group">
-                            <label>Dislikes:</label>
-                            <input type="text" name="dislikes" value="{{ user.dislikes|join(', ') }}">
-
-                        <div class="form-group"></div>
-                            <label>Diet:</label>
-                            <input type="text" name="diet" value="{{ user.diet }}">
-                        </div>
-                        <div class="form-group">
-                            <label>Diet Goal:</label>
-                            <input type="text" name="goal" value="{{ user.goal }}">
-                        </div>
-                        
-                        <button type="submit" class="btn">Save Changes</button>
-                    </form>
-                </div>
+    <div class="container">
+        <div class="card fade-in">
+            <div class="card-header">
+                <h1>Your Profile</h1>
+                <a href="{{ url_for('dashboard') }}" class="button" style="float: right;">Back to Dashboard</a>
             </div>
-        </section>
+
+            <form method="POST" action="{{ url_for('profile') }}" class="form-section">
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" value="{{ user.age }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sex">Sex</label>
+                    <select id="sex" name="sex" required>
+                        <option value="Male" {% if user.sex == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if user.sex == 'Female' %}selected{% endif %}>Female</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="height">Height (in)</label>
+                    <input type="number" id="height" name="height" value="{{ user.height }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="weight">Weight (lbs)</label>
+                    <input type="number" id="weight" name="weight" value="{{ user.weight }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="activity_level">Activity Level</label>
+                    <select id="activity_level" name="activity_level" required>
+                        <option value="Sedentary" {% if user.activity_level == 'Sedentary' %}selected{% endif %}>Sedentary</option>
+                        <option value="Moderately active" {% if user.activity_level == 'Moderately active' %}selected{% endif %}>Moderately active</option>
+                        <option value="Active" {% if user.activity_level == 'Active' %}selected{% endif %}>Active</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="allergies">Allergies (comma-separated)</label>
+                    <input type="text" id="allergies" name="allergies" value="{{ user.allergies|replace('[', '')|replace(']', '')|replace('\'', '') }}" placeholder="e.g. peanuts, shellfish">
+                </div>
+
+                <div class="form-group">
+                    <label for="likes">Preferred Ingredients</label>
+                    <input type="text" id="likes" name="likes" value="{{ user.likes|replace('[', '')|replace(']', '')|replace('\'', '') }}" placeholder="beef, fish, etc." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dislikes">Avoided Ingredients</label>
+                    <input type="text" id="dislikes" name="dislikes" value="{{ user.dislikes|replace('[', '')|replace(']', '')|replace('\'', '') }}" placeholder="onions, tomatoes, etc." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="diet">Diet</label>
+                    <select id="diet" name="diet" required>
+                        <option value="No Restriction" {% if user.diet == 'No Restriction' %}selected{% endif %}>No Restriction</option>
+                        <option value="Vegetarian" {% if user.diet == 'Vegetarian' %}selected{% endif %}>Vegetarian</option>
+                        <option value="Vegan" {% if user.diet == 'Vegan' %}selected{% endif %}>Vegan</option>
+                        <option value="Gluten-Free" {% if user.diet == 'Gluten-Free' %}selected{% endif %}>Gluten-Free</option>
+                        <option value="Lactose-Intolerant" {% if user.diet == 'Lactose-Intolerant' %}selected{% endif %}>Lactose-Intolerant</option>
+                        <option value="Halal" {% if user.diet == 'Halal' %}selected{% endif %}>Halal</option>
+                        <option value="Pescetarian" {% if user.diet == 'Pescetarian' %}selected{% endif %}>Pescetarian</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="goal">Diet Goal</label>
+                    <select id="goal" name="goal" required>
+                        <option value="Maintain Weight" {% if user.goal == 'Maintain Weight' %}selected{% endif %}>Maintain Weight</option>
+                        <option value="Lose Weight" {% if user.goal == 'Lose Weight' %}selected{% endif %}>Lose Weight</option>
+                        <option value="Gain Weight" {% if user.goal == 'Gain Weight' %}selected{% endif %}>Gain Weight</option>
+                    </select>
+                </div>
+
+                <div class="form-footer">
+                    <button type="submit" class="button">Update Profile</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html> 

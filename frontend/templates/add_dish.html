@@ -2,16 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Dish</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Meal - DietBot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Add Dish</h1>
-        <form method="POST" action="{{ url_for('submit_dish') }}">
-            <input type="text" name="dish_name" placeholder="Dish Name" required>
-            <button type="submit" class="button">Submit</button>
-        </form>
+        <div class="card fade-in">
+            <div class="card-header">
+                <h1>Add Today's Meal</h1>
+                <a href="{{ url_for('dashboard') }}" class="button" style="float: right;">Back to Dashboard</a>
+            </div>
+
+            <form method="POST" action="{{ url_for('submit_dish') }}" class="form-section">
+                <div class="form-group">
+                    <label for="dish_name">Dish Name</label>
+                    <input type="text" id="dish_name" name="dish_name" required>
+                </div>
+                </div>
+
+                <button type="submit" class="button">Add Meal</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

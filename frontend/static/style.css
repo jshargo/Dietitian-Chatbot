@@ -1,21 +1,26 @@
-/* Incorporate a modern look with a minimal color palette: emerald green, white, and dark aqua.
-   Rounded edges for buttons, transition effects, and subtle animations for hover. */
-
 :root {
+    --primary-color: #2ecc71;
+    --secondary-color: rgb(86, 88, 105);
+    --border-color: rgba(0, 0, 0, 0.1);
+    --background-color: white;
+    --text-color: #2c3e50;
+    --error-color: #e74c3c;
+    --success-color: #2ecc71;
     --emerald-green: #2ecc71;
     --dark-aqua: #16a085;
     --white: #ffffff;
-    --text-color: #2c3e50;
     --gray-light: #f8f9fa;
 }
 
-/* Basic resets/body styling */
+/* Global reset and base styles */
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--gray-light);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, sans-serif;
     color: var(--text-color);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: var(--background-color);
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 /* Links */
@@ -25,6 +30,101 @@ a {
 }
 a:hover {
     color: var(--dark-aqua);
+}
+
+/* Container styles */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* Card styles */
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+/* Form styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* Button styles */
+.button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background-color: var(--dark-aqua);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure text remains visible on hover */
+.button:hover,
+.button:active,
+.button:focus {
+    color: white;
+    text-decoration: none;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--text-color);
+}
+
+/* Header styles */
+h1, h2, h3 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+/* Animation classes */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Nav or container areas if needed */
@@ -58,28 +158,6 @@ input[type="submit"]:hover,
 button:hover {
     background-color: var(--dark-aqua);
     transform: scale(1.03);
-}
-
-/* Form fields */
-input[type="text"],
-input[type="number"],
-input[type="password"],
-select {
-    width: 100%;
-    padding: 8px;
-    margin: 8px 0 16px 0;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    transition: box-shadow 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="number"]:focus,
-input[type="password"]:focus,
-select:focus {
-    outline: none;
-    box-shadow: 0 0 4px rgba(46, 204, 113, 0.5);
 }
 
 /* Titles */
@@ -168,9 +246,15 @@ table th, table td {
 
 /* Additional chat page adjustments */
 .card-header {
-    background-color: var(--emerald-green);
-    color: var(--white);
-    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.card-header h1 {
+    color: var(--text-color);
+    margin: 0;
 }
 
 /* Subtle fade-in animation */
@@ -407,4 +491,19 @@ table th, table td {
     100% {
         box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
     }
+}
+
+/* Form footer for profile page */
+.form-footer {
+    display: flex;
+    justify-content: left;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* Override the general card-header background */
+.card .card-header {
+    background-color: transparent;
+    color: var(--text-color);
+    border-radius: 0;
 }
