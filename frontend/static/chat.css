@@ -160,10 +160,10 @@ body {
 
 /* Message bubble styles */
 .message {
-    display: inline-block;            /* Shrink to fit text */
+    display: inline-block;
     width: auto;
-    max-width: 75%;                   /* Wrap text if too long */
-    white-space: pre-wrap;            /* Wrap long lines properly */
+    max-width: 50%;                   /* Changed from 75% to 50% */
+    white-space: pre-wrap;
     padding: 12px 18px;
     border-radius: 18px;
     font-size: 16px;

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 DEFAULT_MODEL = "gpt-4o-mini"
-AGENT_LOOP_LIMIT = 1
+AGENT_LOOP_LIMIT = 3
 
 class Model:
     def __init__(self) -> None:
@@ -235,11 +235,13 @@ class Model:
                             except Exception:
                                 response_content = {}            
 
+            # return raw_content too
             return {
                 "reasoning": f"Identified intent: {top_intent}. " + response_content.get("reasoning", ""),
                 "final_answer": response_content.get("final_answer", ""),
                 "detected_intent": top_intent,
-                "context_used": collected_contexts[-1] if collected_contexts else ""
+                "context_used": collected_contexts[-1] if collected_contexts else "",
+                "raw_content": raw_content
             }
 
         except Exception as e:

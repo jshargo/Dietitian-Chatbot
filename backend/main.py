@@ -48,7 +48,8 @@ async def process_query(request: Request):
         "reasoning": response["reasoning"],
         "final_answer": response["final_answer"],
         "detected_intent": response["detected_intent"],
-        "context_used": response.get("context_used", "")
+        "context_used": response.get("context_used", ""),
+        "raw_content": response.get("raw_content", "")
     })
 
 @app.get("/health")
