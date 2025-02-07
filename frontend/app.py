@@ -6,6 +6,8 @@ import requests
 import logging
 from dotenv import load_dotenv
 import os
+from sqlalchemy.types import TypeDecorator, TEXT
+import json
 
 # Configure logging
 logging.basicConfig(
@@ -30,8 +32,23 @@ app.app_context().push()
 
 db = SQLAlchemy(app)
 
+# Add this custom type for JSON/List storage
+class ListType(TypeDecorator):
+    impl = TEXT
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return '[]'
+        return json.dumps(value)
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return []
+        return json.loads(value)
+
 # Define the database models
 class UserProfile(db.Model):
+    __tablename__ = "user_profile"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
@@ -39,9 +56,15 @@ class UserProfile(db.Model):
     sex = db.Column(db.String(10), nullable=False)
     height = db.Column(db.Integer, nullable=False)
     weight = db.Column(db.Integer, nullable=False)
-    allergies = db.Column(db.String(100), nullable=True)
     activity_level = db.Column(db.String(50), nullable=False)
+    # Modified columns to use ListType
+    allergies = db.Column(ListType, default=[])
+    likes = db.Column(ListType, nullable=False, default=[])
+    dislikes = db.Column(ListType, nullable=False, default=[])
+    diet = db.Column(db.String(50), nullable=False)
+    goal = db.Column(db.String(50), nullable=False)
     daily_nutrient_intake = db.relationship('DailyNutrientIntake', backref='user', lazy=True)
+    
 
 class DailyNutrientIntake(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -130,9 +153,27 @@ def create_profile():
     height = request.form['height']
     weight = request.form['weight']
     activity_level = request.form['activity_level']
-    allergies = request.form['allergies']
+    # Convert to lists and clean the data
+    allergies = [x.strip() for x in request.form['allergies'].split(',') if x.strip()]
+    likes = [x.strip() for x in request.form['likes'].split(',') if x.strip()]
+    dislikes = [x.strip() for x in request.form['dislikes'].split(',') if x.strip()]
+    diet = request.form['diet']
+    goal = request.form['goal']
 
-    user = UserProfile(name=name, password=password, age=age, sex=sex, height=height, weight=weight, activity_level=activity_level, allergies=allergies)
+    user = UserProfile(
+        name=name,
+        password=password,
+        age=age,
+        sex=sex,
+        height=height,
+        weight=weight,
+        activity_level=activity_level,
+        allergies=allergies,  # Now storing as list
+        likes=likes,          # Now storing as list
+        dislikes=dislikes,    # Now storing as list
+        diet=diet,
+        goal=goal
+    )
     db.session.add(user)
     db.session.commit()
 
@@ -289,7 +330,12 @@ def ask():
                     "sex": user.sex,
                     "height": user.height,
                     "weight": user.weight,
-                    "activity_level": user.activity_level
+                    "activity_level": user.activity_level,
+                    "allergies": user.allergies,
+                    "likes": user.likes,
+                    "dislikes": user.dislikes,
+                    "diet": user.diet,
+                    "goal": user.goal
                 },
                 "daily_nutrients": [
                     {
@@ -356,19 +402,52 @@ def profile():
     user = db.session.get(UserProfile, session['user_id'])
     
     if request.method == 'POST':
-        # Update user profile
         user.height = request.form['height']
         user.weight = request.form['weight']
         user.activity_level = request.form['activity_level']
-        user.allergies = request.form['allergies']
+        # Convert to lists
+        user.allergies = [x.strip() for x in request.form['allergies'].split(',') if x.strip()]
+        user.likes = [x.strip() for x in request.form['likes'].split(',') if x.strip()]
+        user.dislikes = [x.strip() for x in request.form['dislikes'].split(',') if x.strip()]
+        diet_option = request.form['diet']
+        goal_option = request.form['goal']
+        valid_diets = ["No Restriction", "Vegetarian", "Vegan", "Gluten-Free", "Lactose-Intolerant", "Halal", "Pescetarian"]
+        valid_goals = ["Maintain Weight", "Lose Weight", "Gain Weight"]
+        if diet_option not in valid_diets or goal_option not in valid_goals:
+            flash('Invalid diet or goal.', 'danger')
+            return redirect(url_for('profile'))
+        user.diet = diet_option
+        user.goal = goal_option
         db.session.commit()
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('dashboard'))
     
     return render_template('profile.html', user=user)
 
+@app.route("/user_context/{user_id}", methods=["GET"])
+def get_user_context_new(user_id: int):
+    user = db.session.get(UserProfile, user_id)
+    if not user:
+        return jsonify({"error": "No user found"}), 404
+    '''
+    To be implemented: recommended calories for dishes
+    '''
+    return jsonify({
+        "name": user.name,
+        "age": user.age,
+        "sex": user.sex,
+        "height": user.height,
+        "weight": user.weight,
+        "activity_level": user.activity_level,
+        "allergies": user.allergies,
+        "likes": user.likes,
+        "dislikes": user.dislikes,
+        "diet": user.diet,
+        "goal": user.goal
+    }), 200
 
 if __name__ == '__main__':
     with app.app_context():
+        #drop all tables
         db.create_all()
         app.run(debug=True, host='localhost', port=8001, use_reloader=True)

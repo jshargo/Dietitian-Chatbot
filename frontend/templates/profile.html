@@ -30,11 +30,11 @@
                             <input type="text" value="{{ user.sex }}" disabled>
                         </div>
                         <div class="form-group">
-                            <label>Height (cm):</label>
+                            <label>Height (in):</label>
                             <input type="number" name="height" value="{{ user.height }}" required>
                         </div>
                         <div class="form-group">
-                            <label>Weight (kg):</label>
+                            <label>Weight (lbs):</label>
                             <input type="number" name="weight" value="{{ user.weight }}" required>
                         </div>
                         <div class="form-group">
@@ -47,9 +47,25 @@
                         </div>
                         <div class="form-group">
                             <label>Allergies:</label>
-                            <input type="text" name="allergies" value="{{ user.allergies or '' }}" 
-                                   placeholder="List allergies separated by commas">
+                            <input type="text" name="allergies" value="{{ user.allergies|join(', ') }}">
                         </div>
+                        <div class="form-group">
+                            <label>Likes:</label>
+                            <input type="text" name="likes" value="{{ user.likes|join(', ') }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Dislikes:</label>
+                            <input type="text" name="dislikes" value="{{ user.dislikes|join(', ') }}">
+
+                        <div class="form-group"></div>
+                            <label>Diet:</label>
+                            <input type="text" name="diet" value="{{ user.diet }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Diet Goal:</label>
+                            <input type="text" name="goal" value="{{ user.goal }}">
+                        </div>
+                        
                         <button type="submit" class="btn">Save Changes</button>
                     </form>
                 </div>

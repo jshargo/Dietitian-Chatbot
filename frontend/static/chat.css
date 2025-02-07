@@ -12,6 +12,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, sans-serif;
     color: var(--primary-color);
     background-color: white;
+    font-size: 16px;
 }
 
 /* Main layout */
@@ -22,8 +23,8 @@ body {
 
 /* Sidebar styles */
 .sidebar {
-    width: 300px;
-    padding: 20px;
+    width: 360px;
+    padding: 24px;
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
@@ -31,11 +32,11 @@ body {
     overflow-y: auto;
 }
 .sidebar-header h1 {
-    font-size: 24px;
+    font-size: 28px;
     margin: 0 0 8px 0;
 }
 .sidebar-header p {
-    font-size: 14px;
+    font-size: 16px;
     margin: 0;
 }
 .sidebar-btn {
@@ -69,8 +70,8 @@ body {
 .meals-table th,
 .meals-table td {
     border: 1px solid var(--border-color);
-    padding: 6px 8px;
-    font-size: 12px;
+    padding: 8px 10px;
+    font-size: 14px;
     text-align: center;
 }
 
@@ -116,7 +117,7 @@ body {
     margin-bottom: -5px;
 }
 .card {
-    padding: 12px 16px;
+    padding: 16px 20px;
     border: 1px solid var(--border-color);
     align-items: center;
     border-radius: 12px;
@@ -128,12 +129,12 @@ body {
 }
 .card h3 {
     margin: 0;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
 }
 .card p {
     margin: 4px 0 0;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--secondary-color);
 }
 
@@ -161,11 +162,11 @@ body {
 .message {
     display: inline-block;            /* Shrink to fit text */
     width: auto;
-    max-width: 70%;                   /* Wrap text if too long */
+    max-width: 75%;                   /* Wrap text if too long */
     white-space: pre-wrap;            /* Wrap long lines properly */
-    padding: 10px 15px;
-    border-radius: 16px;
-    font-size: 14px;
+    padding: 12px 18px;
+    border-radius: 18px;
+    font-size: 16px;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -182,7 +183,7 @@ body {
 /* Input container and wrapper */
 .input-container {
     position: relative;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 .input-wrapper {
@@ -195,10 +196,10 @@ body {
 }
 .message-input {
     width: 100%;
-    padding: 16px;
+    padding: 18px;
     border: none;
     resize: none;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.5;
     box-sizing: border-box;
     outline: none;
@@ -207,7 +208,7 @@ body {
     border-top-right-radius: 12px;
 }
 .input-footer {
-    padding: 8px 16px;
+    padding: 10px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -215,64 +216,90 @@ body {
 .left-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 14px;
 }
-.attachment-btn, .send-btn {
+.attachment-btn, .send-btn, .toggle-btn {
     background: none;
     border: none;
-    padding: 4px;
+    padding: 6px;
     cursor: pointer;
     border-radius: 6px;
+    transition: all 0.2s ease;
 }
-.attachment-btn {
-    color: var(--secondary-color);
+.attachment-btn svg, 
+.send-btn svg, 
+.toggle-btn svg {
+    width: 24px;
+    height: 24px;
+}
+.toggle-btn:hover {
+    background-color: rgba(46, 204, 113, 0.15);
+}
+.toggle-btn.active {
+    background-color: rgba(46, 204, 113, 0.4);
+    color: #2ecc71;
+}
+.attachment-btn:hover, 
+.send-btn:hover {
+    background-color: rgba(46, 204, 113, 0.15);
+    transform: scale(1.05);
 }
 .send-btn {
     color: #2ecc71;
-    margin-left: auto; 
+    margin-left: auto;
 }
-.attachment-btn:hover, .send-btn:hover {
-    background-color: rgba(46, 204, 113, 0.1);
+.send-btn:hover {
+    color: #27ae60;
 }
 
 /* Loading animation */
 .loading-container {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     padding: 15px;
     margin: 10px 0;
-    background: rgba(46, 204, 113, 0.1);
-    border-radius: 8px;
 }
-.loading-dots {
-    display: flex;
-    gap: 4px;
-}
-.dot {
-    width: 8px;
-    height: 8px;
-    background: rgb(255, 163, 102);
+
+.loading-spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid rgba(46, 204, 113, 0.1);
+    border-top: 3px solid #2ecc71;
     border-radius: 50%;
-    animation: bounce 1.5s infinite;
+    animation: spin 1s linear infinite;
 }
-.dot:nth-child(2) {
-    animation-delay: 0.2s;
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
-.dot:nth-child(3) {
-    animation-delay: 0.4s;
+
+/* Add typing animation styles */
+.bot-message {
+    visibility: hidden;
 }
-@keyframes bounce {
-    0%, 60%, 100% {
-        transform: translateY(0);
-    }
-    30% {
-        transform: translateY(-8px);
-    }
+
+.bot-message.typing {
+    visibility: visible;
+}
+
+.word {
+    opacity: 0;
+    transition: opacity 0.1s ease-in;
+}
+
+.word.visible {
+    opacity: 1;
+}
+
+/* Remove old loading dots styles */
+.loading-dots {
+    display: none;
 }
 
 /* Responsive adjustments */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .main-container {
         flex-direction: column;
     }
@@ -295,10 +322,71 @@ body {
 
 /* Updated example container to match the chat input container's width and position */
 .example-container {
-    max-width: 900px;
+    max-width: 1000px;
     width: 100%;
     margin: 0 auto 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Update additional content styling */
+.additional-content {
+    margin-top: 8px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: opacity 0.3s ease;
+}
+
+.reasoning-content {
+    background-color: rgba(46, 204, 113, 0.05);
+    border: 1px solid rgba(46, 204, 113, 0.1);
+    margin-bottom: 8px;
+}
+
+.context-content {
+    background-color: rgba(52, 152, 219, 0.05);
+    border: 1px solid rgba(52, 152, 219, 0.1);
+}
+
+/* Ensure smooth transitions for showing/hiding */
+.reasoning-content, .context-content {
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.reasoning-content:not(:visible), 
+.context-content:not(:visible) {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.toggle-btn i {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Adjust the color when active */
+.toggle-btn.active i {
+    color: #2ecc71;
+}
+
+.reasoning-toggle svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.toggle-btn.active svg {
+    fill: rgba(46, 204, 113, 0.2);
 }
