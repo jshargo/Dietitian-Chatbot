@@ -221,27 +221,33 @@ class Model:
             else:
                 # Grab the final LLM output and parse
                 raw_content = getattr(loop_response.choices[0].message, "content", "")
-                response_content = {}
-                if raw_content:
-                    try:
-                        response_content = json.loads(raw_content)
-                    except Exception:
-                        # Attempt to extract JSON substring
-                        json_start = raw_content.find('{')
-                        json_end = raw_content.rfind('}')
-                        if json_start != -1 and json_end != -1:
-                            try:
-                                response_content = json.loads(raw_content[json_start:json_end+1])
-                            except Exception:
-                                response_content = {}            
+                if final_answer:
+                    response_content = {
+                        "reasoning": f"Identified intent: {top_intent}. Question out of scope",
+                        "final_answer": final_answer
+                    }
+                else:
+                    response_content = {}
+                    if raw_content:
+                        try:
+                            response_content = json.loads(raw_content)
+                        except Exception:
+                            json_start = raw_content.find('{')
+                            json_end = raw_content.rfind('}')
+                            if json_start != -1 and json_end != -1:
+                                try:
+                                    response_content = json.loads(raw_content[json_start:json_end+1])
+                                except Exception:
+                                    response_content = {}
+                    if not response_content.get("final_answer"):
+                        response_content["final_answer"] = raw_content if raw_content else "No final answer generated."          
 
             # return raw_content too
             return {
                 "reasoning": f"Identified intent: {top_intent}. " + response_content.get("reasoning", ""),
                 "final_answer": response_content.get("final_answer", ""),
                 "detected_intent": top_intent,
-                "context_used": collected_contexts[-1] if collected_contexts else "",
-                "raw_content": raw_content
+                "context_used": collected_contexts[-1] if collected_contexts else ""
             }
 
         except Exception as e:
