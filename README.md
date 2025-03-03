@@ -16,15 +16,19 @@ pip install -r requirements.txt
 ```
 To run the backend:
 ```bash
-uvicorn main:app --reload --port 8001
+uvicorn main:app --reload --port
 ```
 
-Then run the frontend:
+For the frontend:
 ```bash
 cd frontend
 python -m venv .venv
 source venv/bin/activate
 pip install -r requirements.txt
+```
+
+To run the backend:
+```bash
 flask run --debug 
 ```
 Hosted on localhost:5000
