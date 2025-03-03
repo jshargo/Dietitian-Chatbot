@@ -27,7 +27,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-To run the backend:
+To run the frontend:
 ```bash
 flask run --debug 
 ```
