@@ -11,19 +11,19 @@ Create a virtual environment and install the dependencies: (To be dockerized soo
 ```bash
 cd backend
 python -m venv .venv
-source venv/bin/activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 To run the backend:
 ```bash
-uvicorn main:app --reload --port
+uvicorn main:app --reload 
 ```
 
 For the frontend:
 ```bash
 cd frontend
 python -m venv .venv
-source venv/bin/activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -40,6 +40,13 @@ For CSV file:
 cd data 
 python embed.py
 ```
+
+To start Ollama server:
+```bash
+ollama pull gemma3
+ollama serve
+```
+Restart ollama if port is already in use.
 
 
 ## 📝 License
