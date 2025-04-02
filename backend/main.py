@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
-from model import Model
+from local_model import LocalModel
 from potts import IntentClassifier
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -18,7 +18,9 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 app = FastAPI()
 classifier = IntentClassifier()
-model = Model() 
+
+# Initialize LocalModel
+model = LocalModel()
 
 app.add_middleware(
     CORSMiddleware,
@@ -32,7 +34,7 @@ app.add_middleware(
 async def process_query(request: Request):
     
     data = await request.json()
-    query = data.get("query") or data.get("msg")
+    query = data.get("query") 
     user_context = data.get("context", {}).get("user_profile", {})
     
     if not query:
