@@ -64,5 +64,10 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# Trained Model Artifacts
+backend/intent_classifier/trained_model/
+*.pt
+*.bin
+
 
 

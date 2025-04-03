@@ -1,0 +1,23 @@
+meal-logging:
+I ate an apple for breakfast.
+I had a chicken salad for lunch.
+I had eggs and toast this morning.
+Logged my dinner: salmon and veggies.
+
+meal-planning:
+Can you help me plan my meals for the week?
+I'd like a diet plan for low carb.
+What are some healthy snack ideas?
+Suggest a recipe for a high-protein breakfast.
+
+personalized-health-advice:
+What kind of diet is best for muscle gain?
+Should I be taking vitamin D supplements?
+Is intermittent fasting good for me?
+I have high cholesterol, what should I avoid?
+
+general-education:
+What are the benefits of fiber in diet?
+Explain what antioxidants do.
+What is the difference between macros and micros?
+Tell me about the glycemic index. 
